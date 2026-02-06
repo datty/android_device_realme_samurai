@@ -333,10 +333,12 @@ PRODUCT_PACKAGES += \
     android.hardware.nfc@1.2-service \
     android.hardware.nfc@1.2.vendor \
     com.android.nfc_extras \
-    NfcNci \
     nqnfcinfo \
     SecureElement \
     Tag
+
+PRODUCT_PACKAGES_VENDOR += \
+    NfcNci
 
 # OMX
 PRODUCT_PACKAGES += \
