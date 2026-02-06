@@ -49,7 +49,7 @@ cc_library {
     device_specific: true,
 }
 
-cc_library_shared {
+cc_library {
     name: "libudfps_extension.samurai",
     srcs: ["UdfpsExtension.cpp"],
     include_dirs: [
