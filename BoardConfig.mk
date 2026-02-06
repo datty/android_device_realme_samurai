@@ -142,8 +142,8 @@ BOARD_USES_QCOM_HARDWARE := true
 BOARD_INCLUDE_RECOVERY_DTBO := true
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.qcom
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
-#Disable OTA Recovery Updates
-TARGET_NO_RECOVERY := true
+#Revert no recovery change. This blocks build
+#TARGET_NO_RECOVERY := true
 #TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_qcom
 
 # Releasetools
@@ -200,3 +200,6 @@ WPA_SUPPLICANT_VERSION := VER_0_8_X
 
 # Inherit from the proprietary version
 include vendor/realme/samurai/BoardConfigVendor.mk
+
+#Hack for FMRadio App
+BOARD_HAVE_QCOM_FM := true
