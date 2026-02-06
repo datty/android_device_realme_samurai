@@ -6,6 +6,8 @@
 
 #include "AreaCapture.h"
 
+#include <android-base/properties.h>
+#include <gui/AidlUtil.h>
 #include <gui/SurfaceComposerClient.h>
 #include <gui/SyncScreenCaptureListener.h>
 #include <ui/DisplayState.h>
@@ -19,6 +21,7 @@ using android::ScreenshotClient;
 using android::sp;
 using android::SurfaceComposerClient;
 using android::SyncScreenCaptureListener;
+using android::gui::aidl_utils::toARect;
 using android::gui::ScreenCaptureResults;
 using android::ui::PixelFormat;
 
@@ -53,11 +56,12 @@ sp<IBinder> AreaCapture::getInternalDisplayToken() {
 ndk::ScopedAStatus AreaCapture::getAreaBrightness(AreaRgbCaptureResult* _aidl_return) {
     DisplayCaptureArgs captureArgs;
     captureArgs.displayToken = getInternalDisplayToken();
-    captureArgs.pixelFormat = PixelFormat::RGBA_8888;
-    captureArgs.sourceCrop = m_screenshot_rect;
+
+    captureArgs.captureArgs.pixelFormat = ::android::PIXEL_FORMAT_RGBA_8888;
+    captureArgs.captureArgs.sourceCrop = toARect(m_screenshot_rect);
     captureArgs.width = m_screenshot_rect.getWidth();
     captureArgs.height = m_screenshot_rect.getHeight();
-    captureArgs.captureSecureLayers = true;
+    captureArgs.captureArgs.captureSecureLayers = true;
 
     sp<SyncScreenCaptureListener> captureListener = new SyncScreenCaptureListener();
     if (ScreenshotClient::captureDisplay(captureArgs, captureListener) != ::android::NO_ERROR) {
