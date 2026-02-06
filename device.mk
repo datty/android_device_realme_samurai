@@ -513,3 +513,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     firmware_wlan_mac.bin_symlink \
     firmware_WCNSS_qcom_cfg.ini_symlink
+
+#so we don't need to inherit from common for the moment- TODO
+#We've potentially lost the original file...need to check this later - TODO
+#$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
+#$(call inherit-product, vendor/lineage/config/common.mk)
+PRODUCT_PACKAGES += \
+    framework_compatibility_matrix.lineage.xml
