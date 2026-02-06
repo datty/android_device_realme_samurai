@@ -92,7 +92,6 @@ PRODUCT_COPY_FILES += \
 
 # ANT+
 PRODUCT_PACKAGES += \
-    AntHalService-Soong \
     com.dsi.ant@1.0.vendor
 
 # Audio
@@ -100,7 +99,6 @@ PRODUCT_PACKAGES += \
     android.hardware.audio@6.0-impl:32 \
     android.hardware.audio.effect@6.0-impl:32 \
     android.hardware.audio.service \
-    android.hardware.bluetooth.a2dp@1.0.vendor \
     android.hardware.bluetooth.audio-impl \
     audio.primary.msmnile \
     audio.bluetooth.default \
@@ -189,14 +187,11 @@ PRODUCT_PACKAGES += \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service \
     disable_configstore \
-    gralloc.msmnile \
-    hwcomposer.msmnile \
     libdisplayconfig.qti \
     libqdMetaData \
     libqdMetaData.system \
     libtinyxml \
     libvulkan \
-    memtrack.msmnile \
     vendor.display.config@2.0 \
     vendor.display.config@2.0.vendor \
     vendor.qti.hardware.display.allocator-service \
@@ -319,9 +314,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/media_profiles_V1_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_V1_0.xml \
     $(LOCAL_PATH)/configs/system_properties.xml:$(TARGET_COPY_OUT_VENDOR)/etc/system_properties.xml
 
-# Livedisplay
-PRODUCT_PACKAGES += \
-    vendor.lineage.livedisplay@2.0-service-sdm
+# Livedisplay - TODO
 
 # Native libraries whitelist
 PRODUCT_COPY_FILES += \
@@ -354,13 +347,7 @@ PRODUCT_PACKAGES += \
     libc2dcolorconvert \
     libcodec2_hidl@1.0.vendor \
     libcodec2_vndk.vendor \
-    libmm-omxcore \
-    libOmxAacEnc \
-    libOmxAmrEnc \
     libOmxCore \
-    libOmxEvrcEnc \
-    libOmxG711Enc \
-    libOmxQcelp13Enc \
     libOmxVdec \
     libOmxVenc \
     libopus.vendor \
