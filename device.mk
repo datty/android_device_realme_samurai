@@ -468,7 +468,7 @@ PRODUCT_PACKAGES += \
 
 # Touch
 PRODUCT_PACKAGES += \
-    vendor.lineage.touch@1.0-service.samurai
+    vendor.lineage.touch-service.samurai
 
 # USB
 PRODUCT_PACKAGES += \
