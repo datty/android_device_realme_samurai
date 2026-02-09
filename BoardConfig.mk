@@ -143,7 +143,9 @@ TARGET_USERIMAGES_USE_F2FS := true
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
 TARGET_COPY_OUT_ODM := odm
 TARGET_COPY_OUT_VENDOR := vendor
-TARGET_NO_AB := true # Added - wouldn't build without META/ab_partitions.txt
+# Added - wouldn't build without META/ab_partitions.txt
+AB_OTA_UPDATER := false
+PRODUCT_VIRTUAL_AB := false
 
 # QCOM
 BOARD_USES_QCOM_HARDWARE := true
