@@ -27,6 +27,9 @@ TARGET_SCREEN_WIDTH := 1080
 PRODUCT_BROKEN_VERIFY_USES_LIBRARIES := true
 RELAX_USES_LIBRARY_CHECK := true
 
+# Kernel
+PRODUCT_ENABLE_UFFD_GC := true
+
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay-lineage
@@ -216,9 +219,9 @@ PRODUCT_PACKAGES += \
 
 # Fingerprint
 PRODUCT_PACKAGES += \
-    android.hardware.biometrics.fingerprint@2.3-service.samurai \
-    android.hardware.biometrics.fingerprint@2.3.vendor \
-    libshims_fingerprint.samurai
+    android.hardware.biometrics.fingerprint@2.3-service.oplus
+
+$(call soong_config_set,surfaceflinger,udfps_lib,//hardware/oplus:libudfps_extension.oplus)
 
 # fingerprint (IFAA)
 PRODUCT_PACKAGES += \
@@ -321,7 +324,10 @@ PRODUCT_COPY_FILES += \
 
 # Livedisplay
 PRODUCT_PACKAGES += \
-    vendor.lineage.livedisplay@2.0-service-sdm
+    vendor.lineage.livedisplay-service.oplus
+
+$(call soong_config_set_bool,OPLUS_LINEAGE_LIVEDISPLAY_HAL,ENABLE_AF,true)
+$(call soong_config_set_bool,OPLUS_LINEAGE_LIVEDISPLAY_HAL,ENABLE_DM,true)
 
 # Native libraries whitelist
 PRODUCT_COPY_FILES += \
@@ -445,7 +451,7 @@ PRODUCT_PACKAGES += \
     android.hardware.sensors@2.1-service.multihal \
     libdumpstateutil.vendor:64 \
     libsensorndkbridge \
-    sensors.oplus \
+    sensors.oplus.samurai \
     vendor.lineage.oplus_als.service \
     vendor.oplus.hardware.syshelper.service
 
@@ -458,7 +464,8 @@ PRODUCT_PACKAGES += \
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
-    $(LOCAL_PATH)
+    $(LOCAL_PATH) \
+    hardware/oplus
 
 # Telephony
 PRODUCT_PACKAGES += \
@@ -479,7 +486,10 @@ PRODUCT_PACKAGES += \
 
 # Touch
 PRODUCT_PACKAGES += \
-    vendor.lineage.touch@1.0-service.samurai
+    vendor.lineage.touch-service.oplus
+
+$(call soong_config_set_bool,OPLUS_LINEAGE_TOUCH_HAL,ENABLE_HTPR,false)
+$(call soong_config_set,OPLUS_LINEAGE_TOUCH_HAL,INCLUDE_DIR,$(LOCAL_PATH)/touch/include)
 
 # USB
 PRODUCT_PACKAGES += \
@@ -487,7 +497,7 @@ PRODUCT_PACKAGES += \
 
 # Vibrator
 PRODUCT_PACKAGES += \
-    vendor.qti.hardware.vibrator.service.samurai
+    vendor.qti.hardware.vibrator.service.oplus
 
 # WiFi
 PRODUCT_PACKAGES += \

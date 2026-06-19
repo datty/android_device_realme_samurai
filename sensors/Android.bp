@@ -40,7 +40,8 @@ cc_binary {
 }
 
 cc_library_shared {
-    name: "sensors.oplus",
+    name: "sensors.oplus.samurai",
+    stem: "sensors.oplus",
     defaults: ["hidl_defaults"],
     srcs: [
         "Sensor.cpp",
