@@ -1,11 +1,7 @@
 [
   {
-    "remote": "github",
-    "repository": "LineageOS/android_hardware_oplus",
-    "target_path": "hardware/oplus"
-  },
-  {
-    "repository": "android_kernel_realme_sm8150",
-    "target_path": "kernel/realme/sm8150"
+    "repository": "android_hardware_oplus",
+    "target_path": "hardware/oplus",
+    "branch": "lineage-23.2"
   }
 ]
