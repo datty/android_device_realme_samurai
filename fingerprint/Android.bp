@@ -1,61 +1,12 @@
 //
-// Copyright (C) 2017-2021 The LineageOS Project
+// SPDX-FileCopyrightText: 2024 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-cc_binary {
-    name: "android.hardware.biometrics.fingerprint@2.3-service.samurai",
-    defaults: ["hidl_defaults"],
-    init_rc: ["android.hardware.biometrics.fingerprint@2.3-service.samurai.rc"],
-    vintf_fragments: ["android.hardware.biometrics.fingerprint@2.3-service.samurai.xml"],
-    vendor: true,
-    relative_install_path: "hw",
-    srcs: [
-        "BiometricsFingerprint.cpp",
-        "service.cpp",
-    ],
-    shared_libs: [
-        "libbinder_ndk",
-        "liblog",
-        "libhidlbase",
-        "libutils",
-        "libbase",
-        "android.hardware.biometrics.fingerprint@2.1",
-        "android.hardware.biometrics.fingerprint@2.2",
-        "android.hardware.biometrics.fingerprint@2.3",
-        "vendor.oplus.hardware.biometrics.fingerprint@2.1",
-        "vendor.oplus.hardware.syshelper-V1-ndk",
-    ],
-    proprietary: true,
-}
-
-cc_library {
-    name: "libshims_fingerprint.samurai",
-    srcs: ["BiometricsFingerprintShim.cpp"],
-    shared_libs: [
-        "libcutils",
-        "liblog",
-    ],
-    device_specific: true,
-}
-
-cc_library_static {
-    name: "libudfps_extension.samurai",
-    srcs: ["UdfpsExtension.cpp"],
-    include_dirs: [
-        "frameworks/native/services/surfaceflinger/CompositionEngine/include"
-    ],
-    header_libs: [
-        "qti_kernel_headers",
-    ],
-}
+// The fingerprint HAL is now provided by the shared
+// android.hardware.biometrics.fingerprint@2.3-service.oplus from hardware/oplus,
+// and UDFPS by //hardware/oplus:libudfps_extension.oplus (wired via
+// soong_config_set surfaceflinger udfps_lib in device.mk). The vendor
+// vendor.oplus.hardware.biometrics.fingerprint@2.1 interface also comes from
+// hardware/oplus now. The old inline service.cpp / BiometricsFingerprint* /
+// UdfpsExtension here are retained for reference only and are not built
+// (their modules previously collided with the hardware/oplus equivalents).
