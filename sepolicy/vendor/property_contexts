@@ -16,33 +16,20 @@ persist.vendor.service.bt.iot.enablelogging u:object_r:vendor_bluetooth_prop:s0
 vendor.bluetooth.soc                u:object_r:vendor_bluetooth_prop:s0
 
 # Camera
-oplus.camera.                       u:object_r:vendor_camera_prop:s0
-oppo.camera.                        u:object_r:vendor_camera_prop:s0
 oppo.switch.video.beauty            u:object_r:vendor_camera_prop:s0
 persist.bps.debug                   u:object_r:vendor_camera_prop:s0
-persist.camera.                     u:object_r:vendor_camera_prop:s0
 persist.front.skipdisplay.enable    u:object_r:vendor_camera_prop:s0
 persist.ipe.debug                   u:object_r:vendor_camera_prop:s0
 persist.oppo.camera.                u:object_r:vendor_camera_prop:s0
 persist.oppo.front.mfnr             u:object_r:vendor_camera_prop:s0
-persist.sys.assert.panic            u:object_r:vendor_camera_prop:s0
 persist.sys.oppo.region             u:object_r:vendor_camera_prop:s0
-persist.sys.log.ae                  u:object_r:vendor_camera_prop:s0
-persist.sys.log.af                  u:object_r:vendor_camera_prop:s0
-persist.sys.log.awb                 u:object_r:vendor_camera_prop:s0
 persist.watermark.dumpimg           u:object_r:vendor_camera_prop:s0
-ro.oppo.market.                     u:object_r:vendor_camera_prop:s0
 ro.oppo.version                     u:object_r:vendor_camera_prop:s0
-vendor.oppo.camera.                 u:object_r:vendor_camera_prop:s0
 
 # Fingerprint
-gf.debug.dump_data                  u:object_r:oppo_fp_prop:s0
-oplus.fingerprint.                  u:object_r:oppo_fp_prop:s0
 oplus.optical.goodix.fp             u:object_r:oppo_fp_prop:s0
-persist.vendor.fingerprint.         u:object_r:oppo_fp_prop:s0
 vendor.fingerprint.optical.goodix.hal.retry u:object_r:oppo_fp_prop:s0
 vendor.fingerprint.cali             u:object_r:oppo_fp_prop:s0
-persist.vendor.rpmb.enable.state    u:object_r:oppo_fp_prop:s0
 
 # Google camera hal read only props
 ro.camera.res.fmq.size              u:object_r:camera_ro_prop:s0
@@ -61,15 +48,11 @@ vendor.nfc_se.config_ready          u:object_r:vendor_nfc_nq_prop:s0
 perf_profile                        u:object_r:vendor_perf_prop:s0
 
 # Project
-ro.hardware.chipname                u:object_r:exported_default_prop:s0
-ro.separate.soft                    u:object_r:exported_default_prop:s0
 
 # RIL
 oppo.eng.factory.no                 u:object_r:vendor_radio_prop:s0
-ro.build.version.ota                u:object_r:vendor_radio_prop:s0
 ro.oppo.build.exp                   u:object_r:vendor_radio_prop:s0
 ro.oppo.network.                    u:object_r:vendor_radio_prop:s0
 ro.oppo.regionmark                  u:object_r:vendor_radio_prop:s0
 ro.rf_version                       u:object_r:vendor_radio_prop:s0
-ro.sys.reserve.integrate            u:object_r:vendor_radio_prop:s0
 sys.build.display.full_id           u:object_r:vendor_radio_prop:s0
