@@ -436,7 +436,7 @@ PRODUCT_COPY_FILES += \
 # Sensors
 PRODUCT_PACKAGES += \
     android.frameworks.sensorservice@1.0.vendor \
-    android.hardware.sensors@2.1-service.samurai \
+    android.hardware.sensors@2.1-service.multihal \
     libdumpstateutil.vendor:64 \
     libsensorndkbridge \
     sensors.oplus.samurai \

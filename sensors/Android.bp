@@ -1,44 +1,14 @@
-cc_binary {
-    name: "android.hardware.sensors@2.1-service.samurai",
-    stem: "android.hardware.sensors@2.1-service.multihal",
-    overrides: ["android.hardware.sensors@2.1-service.multihal"],
-    defaults: [
-        "hidl_defaults",
-    ],
-    vendor: true,
-    relative_install_path: "hw",
-    srcs: [
-        "AlsCorrection.cpp",
-        "HalProxy.cpp",
-        "HalProxyCallback.cpp",
-        "service.cpp",
-    ],
-    init_rc: ["android.hardware.sensors@2.1-service-multihal.rc"],
-    vintf_fragments: ["android.hardware.sensors@2.1-multihal.xml"],
-    header_libs: [
-        "android.hardware.sensors@2.X-multihal.header",
-        "android.hardware.sensors@2.X-shared-utils",
-    ],
-    shared_libs: [
-        "android.hardware.sensors@2.0",
-        "android.hardware.sensors@2.0-ScopedWakelock",
-        "android.hardware.sensors@2.1",
-        "libbase",
-        "libbinder",
-        "libbinder_ndk",
-        "libcutils",
-        "libfmq",
-        "libhidlbase",
-        "liblog",
-        "libpower",
-        "libutils",
-        "libbinder_ndk",
-        "vendor.lineage.oplus_als-V1-ndk",
-    ],
-    static_libs: [
-        "android.hardware.sensors@1.0-convert",
-    ],
-}
+// The sensors multihal service is provided by the AOSP
+// android.hardware.sensors@2.1-service.multihal (referenced from device.mk and
+// also pulled by the common config). This device only contributes the OPLUS
+// sensor subhal below, loaded by the multihal via configs/sensors/hals.conf.
+//
+// The previous inline custom multihal service (service.cpp / HalProxy* /
+// AlsCorrection.cpp) installed the same vendor/bin/hw/...service.multihal binary
+// as the AOSP one, which is unconditionally built on lineage-23 -> dupbuild
+// collision. It is no longer built; its sources remain for reference. The inline
+// ALS correction is dropped here and can be reintroduced as a subhal-side
+// adjustment later if needed.
 
 cc_library_shared {
     name: "sensors.oplus.samurai",
