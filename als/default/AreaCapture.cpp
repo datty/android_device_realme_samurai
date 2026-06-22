@@ -53,11 +53,14 @@ sp<IBinder> AreaCapture::getInternalDisplayToken() {
 ndk::ScopedAStatus AreaCapture::getAreaBrightness(AreaRgbCaptureResult* _aidl_return) {
     DisplayCaptureArgs captureArgs;
     captureArgs.displayToken = getInternalDisplayToken();
-    captureArgs.pixelFormat = PixelFormat::RGBA_8888;
-    captureArgs.sourceCrop = m_screenshot_rect;
+    captureArgs.captureArgs.pixelFormat = static_cast<int32_t>(PixelFormat::RGBA_8888);
+    captureArgs.captureArgs.sourceCrop.left = m_screenshot_rect.left;
+    captureArgs.captureArgs.sourceCrop.top = m_screenshot_rect.top;
+    captureArgs.captureArgs.sourceCrop.right = m_screenshot_rect.right;
+    captureArgs.captureArgs.sourceCrop.bottom = m_screenshot_rect.bottom;
     captureArgs.width = m_screenshot_rect.getWidth();
     captureArgs.height = m_screenshot_rect.getHeight();
-    captureArgs.captureSecureLayers = true;
+    captureArgs.captureArgs.secureLayerMode = ::android::gui::SecureLayerMode::Capture;
 
     sp<SyncScreenCaptureListener> captureListener = new SyncScreenCaptureListener();
     if (ScreenshotClient::captureDisplay(captureArgs, captureListener) != ::android::NO_ERROR) {
