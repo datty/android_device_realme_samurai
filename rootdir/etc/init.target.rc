@@ -121,6 +121,10 @@ on early-boot
 on boot
     chown system system /sys/kernel/qvr_external_sensor/fd
 
+    # DEBUG (samurai bring-up): dump stuck graphics allocator state to kmsg.
+    # Remove with allocdbg.sh + its device.mk copy once the allocator registers.
+    start allocdbg
+
     # set default schedTune value for camera-daemon
     write /dev/stune/camera-daemon/schedtune.prefer_idle 1
     write /dev/stune/camera-daemon/schedtune.boost 0
@@ -162,6 +166,14 @@ on boot && property:persist.vendor.usb.controller.default=*
 
 on property:vendor.usb.controller=*
     setprop sys.usb.controller ${vendor.usb.controller}
+
+# DEBUG (samurai bring-up): graphics allocator hang dumper -> /dev/kmsg
+service allocdbg /system/bin/sh /vendor/bin/allocdbg.sh
+    class hal
+    user root
+    group root system
+    disabled
+    oneshot
 
 #pd-mapper
 service vendor.pd_mapper /vendor/bin/pd-mapper

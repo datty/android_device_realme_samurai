@@ -266,6 +266,10 @@ PRODUCT_PACKAGES += \
 # Init
 $(call soong_config_set,libinit,vendor_init_lib,libinit_samurai)
 
+# DEBUG (samurai bring-up): graphics allocator hang dumper. Remove once booting.
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/bin/allocdbg.sh:$(TARGET_COPY_OUT_VENDOR)/bin/allocdbg.sh
+
 PRODUCT_PACKAGES += \
     fstab.qcom \
     init.class_main.sh \
