@@ -6,6 +6,11 @@
 
 BOARD_VENDOR := realme
 
+# A-only device. lineage-23 (Android 16) defaults AB_OTA_UPDATER to true in
+# build/make/core/board_config.mk and marks it read-only, so opt out explicitly
+# or OTA packaging fails with "META/ab_partitions.txt is required for ab_update".
+AB_OTA_UPDATER := false
+
 BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 BUILD_BROKEN_USES_BUILD_COPY_HEADERS := true
