@@ -1,5 +1,1 @@
-# Firmware version requirements intentionally omitted.
-# 'require version-trustzone=...' makes the OTA emit qcom.verify_trustzone(),
-# an edify extension from librecovery_updater_qcom — which lineage-23 forbids
-# for non-A/B OTAs (TARGET_RECOVERY_UPDATER_LIBS vs TARGET_OTA_ALLOW_NON_AB).
-# Without it the package fails to install: unknown function "qcom.verify_trustzone".
+
