@@ -110,14 +110,6 @@ on fs
 on late-fs
     write /mnt/vendor/persist/dbg_latefs 1
     start allocdbg
-    # DEBUG (samurai bring-up): bring USB+adbd up here, before init blocks in
-    # on-post-fs-data, so we can adb in live during the stall (on boot, which
-    # normally configures USB, is never reached). Remove later.
-    setprop vendor.usb.controller a600000.dwc3
-    setprop sys.usb.controller a600000.dwc3
-    setprop sys.usb.configfs 1
-    setprop sys.usb.config adb
-    start adbd
     # Start services for bootanim
     start servicemanager
     start surfaceflinger
@@ -137,6 +129,16 @@ on early-boot
 # loop, `ls -la /mnt/vendor/persist/dbg_*` in recovery shows how far init got.
 on post-fs-data
     write /mnt/vendor/persist/dbg_postfsdata 1
+    # DEBUG (samurai bring-up): bring up USB adb HERE (not late-fs). init.qcom.usb.rc's
+    # on-post-fs-data is imported first and mounts /dev/usb-ffs/adb, so by now the ffs
+    # node exists; adbd can open it -> sys.usb.ffs.ready=1 -> the gadget UDC bind fires.
+    # init's loop keeps running through post-fs-data (~34s) so the gadget enumerates,
+    # giving a live adb window before the reboot. ro.adb.secure=0 disables auth. REMOVE later.
+    setprop vendor.usb.controller a600000.dwc3
+    setprop sys.usb.controller a600000.dwc3
+    setprop sys.usb.configfs 1
+    setprop sys.usb.config adb
+    start adbd
     # DEBUG (samurai bring-up): the RTC boots at 1970 and is only corrected to
     # real time late (after FBE/keystore/odsign). Set a sane time here (this
     # vendor on-post-fs-data runs before init.rc's FBE/keystore) so those run
