@@ -36,11 +36,7 @@ on early-init
     write /dev/kmsg "ALLOCDBG-MARK early-init"
 
 on init
-    write /dev/kmsg "ALLOCDBG-MARK init-before-start"
-    # DEBUG (samurai bring-up): start allocator dumper as early as possible, so it
-    # runs even if init's main thread later blocks on an on-boot wait. Remove later.
-    start allocdbg
-    write /dev/kmsg "ALLOCDBG-MARK init-after-start"
+    write /dev/kmsg "ALLOCDBG-MARK init"
 
     # Boot time fs tuning
     write /sys/block/sda/queue/iostats 0
