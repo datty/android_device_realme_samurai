@@ -123,10 +123,6 @@ on late-fs
     start surfaceflinger
     start bootanim
     start vendor.hwcomposer-2-4
-    # DEBUG/FIX (samurai bring-up): explicitly start the graphics allocator here,
-    # alongside the composer. It is otherwise only started by class_start hal in
-    # 'on boot', which init never reaches, so SurfaceFlinger wedges waiting for it.
-    start vendor.qti.hardware.display.allocator
     start vendor.configstore-hal
 
     # mount RW partitions which need run fsck
