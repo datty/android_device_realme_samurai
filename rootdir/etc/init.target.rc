@@ -217,6 +217,7 @@ service allocdbg /vendor/bin/sh /vendor/bin/allocdbg.sh
     user root
     group root system
     disabled
+    oneshot
 
 #pd-mapper
 service vendor.pd_mapper /vendor/bin/pd-mapper
