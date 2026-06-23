@@ -108,6 +108,7 @@ on fs
     write /sys/kernel/boot_adsp/boot 1
 
 on late-fs
+    write /metadata/dbg_latefs 1
     start allocdbg
     # Start services for bootanim
     start servicemanager
@@ -129,6 +130,15 @@ on early-boot
 # DEBUG (samurai bring-up): milestone markers in /metadata (survive reboot,
 # immune to the class_reset that kills the allocdbg service ~12s). After a
 # loop, `ls -la /metadata/dbg_*` in recovery shows how far init got.
+on post-fs-data
+    write /metadata/dbg_postfsdata 1
+
+on property:init.svc.odsign=running
+    write /metadata/dbg_odsign_run 1
+
+on property:init.svc.odsign=stopped
+    write /metadata/dbg_odsign_stop 1
+
 on property:odsign.key.done=1
     write /metadata/dbg_ods_key 1
 
