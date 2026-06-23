@@ -33,10 +33,8 @@ on early-init
     write /proc/sys/kernel/sched_energy_aware 0
 
 on early-init
-    write /dev/kmsg "ALLOCDBG-MARK early-init"
 
 on init
-    write /dev/kmsg "ALLOCDBG-MARK init"
 
     # Boot time fs tuning
     write /sys/block/sda/queue/iostats 0
@@ -110,7 +108,6 @@ on fs
     write /sys/kernel/boot_adsp/boot 1
 
 on late-fs
-    write /dev/kmsg "ALLOCDBG-MARK late-fs"
     start allocdbg
     # Start services for bootanim
     start servicemanager
@@ -123,11 +120,9 @@ on late-fs
     mount_all /vendor/etc/fstab.qcom --late
 
 on early-boot
-    write /dev/kmsg "ALLOCDBG-MARK early-boot"
     start vendor.sensors
 
 on boot
-    write /dev/kmsg "ALLOCDBG-MARK boot"
     chown system system /sys/kernel/qvr_external_sensor/fd
 
     # set default schedTune value for camera-daemon
