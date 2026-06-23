@@ -1,4 +1,4 @@
-#!/system/bin/sh
+#!/vendor/bin/sh
 # DEBUG (samurai lineage-23 bring-up): the graphics allocator
 # (vendor.qti.hardware.display.allocator-service) starts but never registers
 # @4.0::IAllocator, wedging SurfaceFlinger and rebooting to recovery ~51s.

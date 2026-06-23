@@ -168,7 +168,7 @@ on property:vendor.usb.controller=*
     setprop sys.usb.controller ${vendor.usb.controller}
 
 # DEBUG (samurai bring-up): graphics allocator hang dumper -> /dev/kmsg
-service allocdbg /system/bin/sh /vendor/bin/allocdbg.sh
+service allocdbg /vendor/bin/sh /vendor/bin/allocdbg.sh
     class hal
     user root
     group root system
