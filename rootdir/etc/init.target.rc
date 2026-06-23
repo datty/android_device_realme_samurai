@@ -110,6 +110,14 @@ on fs
 on late-fs
     write /mnt/vendor/persist/dbg_latefs 1
     start allocdbg
+    # DEBUG (samurai bring-up): bring USB+adbd up here, before init blocks in
+    # on-post-fs-data, so we can adb in live during the stall (on boot, which
+    # normally configures USB, is never reached). Remove later.
+    setprop vendor.usb.controller a600000.dwc3
+    setprop sys.usb.controller a600000.dwc3
+    setprop sys.usb.configfs 1
+    setprop sys.usb.config adb
+    start adbd
     # Start services for bootanim
     start servicemanager
     start surfaceflinger
