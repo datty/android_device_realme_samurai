@@ -511,7 +511,3 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     firmware_wlan_mac.bin_symlink \
     firmware_WCNSS_qcom_cfg.ini_symlink
-
-#DEBUG/TEST - Add stub light HAL
-PRODUCT_PACKAGES += \
-    android.hardware.light-service.default
