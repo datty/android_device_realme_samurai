@@ -8,8 +8,8 @@
 # recovery; /dev/kmsg writes are below console loglevel and never survive here).
 # Pure getprop only -- no /proc scan (that blocks on a D-state process).
 # REMOVE with its init.target.rc service + device.mk copy once booting.
-LOG=/cache/allocdbg.log
-echo "ALLOCDBG STARTED" >> $LOG
+LOG=/metadata/allocdbg.log
+echo "ALLOCDBG STARTED (a fresh STARTED line = init restarted this service)" >> $LOG
 i=0
 while [ $i -lt 60 ]; do
     i=$((i + 1))
