@@ -246,9 +246,8 @@ on property:vendor.usb.controller=*
 service allocdbg /vendor/bin/sh /vendor/bin/allocdbg.sh
     class core
     user root
-    group root system
+    group root system log
     disabled
-    oneshot
 
 #pd-mapper
 service vendor.pd_mapper /vendor/bin/pd-mapper
