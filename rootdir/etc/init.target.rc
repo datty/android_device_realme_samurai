@@ -137,6 +137,12 @@ on early-boot
 # loop, `ls -la /mnt/vendor/persist/dbg_*` in recovery shows how far init got.
 on post-fs-data
     write /mnt/vendor/persist/dbg_postfsdata 1
+    # DEBUG (samurai bring-up): the RTC boots at 1970 and is only corrected to
+    # real time late (after FBE/keystore/odsign). Set a sane time here (this
+    # vendor on-post-fs-data runs before init.rc's FBE/keystore) so those run
+    # with a real clock, in case the 56-year jump breaks CE-key/auth-token
+    # recovery (the recurring /data/data set_policy loop).
+    exec - root root -- /system/bin/toybox date @${ro.build.date.utc}
 
 # DEBUG: inline markers (reliable, unlike on-property ones) to bisect the
 # post-fs-data -> on-boot gap where init now stalls.
