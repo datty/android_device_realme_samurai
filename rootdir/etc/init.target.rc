@@ -126,7 +126,26 @@ on late-fs
 on early-boot
     start vendor.sensors
 
+# DEBUG (samurai bring-up): milestone markers in /metadata (survive reboot,
+# immune to the class_reset that kills the allocdbg service ~12s). After a
+# loop, `ls -la /metadata/dbg_*` in recovery shows how far init got.
+on property:odsign.key.done=1
+    write /metadata/dbg_ods_key 1
+
+on property:odsign.verification.done=1
+    write /metadata/dbg_ods_verif 1
+
+on property:init.svc.zygote=running
+    write /metadata/dbg_zygote_run 1
+
+on property:init.svc.zygote=stopped
+    write /metadata/dbg_zygote_stop 1
+
+on property:sys.boot_completed=1
+    write /metadata/dbg_bootcomplete 1
+
 on boot
+    write /metadata/dbg_on_boot 1
     chown system system /sys/kernel/qvr_external_sensor/fd
 
     # set default schedTune value for camera-daemon
