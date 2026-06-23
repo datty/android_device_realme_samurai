@@ -1,15 +1,18 @@
 #!/vendor/bin/sh
-# DEBUG (samurai lineage-23 bring-up): boot loops to recovery at a fixed ~51s
-# with no zygote and no logged reason. Poll the boot gates AND sys.powerctl
-# every second and write to /dev/kmsg at CRIT priority ("<2>" prefix) so it
-# survives console-ramoops (plain kmsg writes are below the console loglevel)
-# and doesn't depend on /metadata or /cache (which get locked in post-fs-data).
-# Catches what sets sys.powerctl=reboot,* (the reboot trigger).
+# DEBUG (samurai lineage-23 bring-up): boot loops to recovery (now ~75s after a
+# data wipe) still stuck in on-post-fs-data, no zygote. Log boot gates +
+# sys.powerctl (the reboot trigger) every 1s to /mnt/vendor/persist, which is a
+# plain partition vold does NOT re-key in post-fs-data (unlike /metadata and
+# /cache, where earlier dumpers' writes vanished ~12s). /dev/kmsg userspace
+# writes don't survive console-ramoops here, so persist is the sink.
+# Read back in recovery: cat /mnt/vendor/persist/allocdbg.log
 # REMOVE with its init.target.rc service + device.mk copy once booting.
+LOG=/mnt/vendor/persist/allocdbg.log
+echo "ADBG STARTED" >> $LOG
 i=0
-while [ $i -lt 70 ]; do
+while [ $i -lt 110 ]; do
     i=$((i + 1))
-    echo "<2>ADBG $i pc=[$(getprop sys.powerctl)] odsvc=$(getprop init.svc.odsign) odk=$(getprop odsign.key.done) odv=$(getprop odsign.verification.done) odok=$(getprop odsign.verification.success) apexd=$(getprop apexd.status) zyg=$(getprop init.svc.zygote) ss=$(getprop init.svc.system_server) bc=$(getprop sys.boot_completed)" > /dev/kmsg
+    echo "i=$i pc=[$(getprop sys.powerctl)] vold=$(getprop init.svc.vold) odsvc=$(getprop init.svc.odsign) odk=$(getprop odsign.key.done) odv=$(getprop odsign.verification.done) zyg=$(getprop init.svc.zygote) ss=$(getprop init.svc.system_server) bc=$(getprop sys.boot_completed)" >> $LOG
     /vendor/bin/sleep 1
 done
-echo "<2>ADBG DONE" > /dev/kmsg
+echo "ADBG DONE" >> $LOG
