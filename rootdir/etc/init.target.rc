@@ -143,6 +143,13 @@ on post-fs-data
     # with a real clock, in case the 56-year jump breaks CE-key/auth-token
     # recovery (the recurring /data/data set_policy loop).
     exec - root root -- /system/bin/toybox date @${ro.build.date.utc}
+    # DEBUG (samurai bring-up): pre-satisfy the odsign gates so init does not
+    # block on the ~37s on-device compile. This vendor block runs before
+    # init.rc's wait_for_prop odsign.key.done (post-fs-data) and
+    # odsign.verification.done (zygote-start), pushing init past the stall to
+    # zygote/system_server so we can see the real next failure. REMOVE later.
+    setprop odsign.key.done 1
+    setprop odsign.verification.done 1
 
 # DEBUG: inline markers (reliable, unlike on-property ones) to bisect the
 # post-fs-data -> on-boot gap where init now stalls.
