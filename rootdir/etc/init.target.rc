@@ -129,6 +129,7 @@ on late-fs
     mount_all /vendor/etc/fstab.qcom --late
 
 on early-boot
+    write /mnt/vendor/persist/dbg_earlyboot 1
     start vendor.sensors
 
 # DEBUG (samurai bring-up): milestone markers in /metadata (survive reboot,
@@ -136,6 +137,17 @@ on early-boot
 # loop, `ls -la /mnt/vendor/persist/dbg_*` in recovery shows how far init got.
 on post-fs-data
     write /mnt/vendor/persist/dbg_postfsdata 1
+
+# DEBUG: inline markers (reliable, unlike on-property ones) to bisect the
+# post-fs-data -> on-boot gap where init now stalls.
+on load-bpf-programs
+    write /mnt/vendor/persist/dbg_loadbpf 1
+
+on bpf-progs-loaded
+    write /mnt/vendor/persist/dbg_bpfloaded 1
+
+on zygote-start
+    write /mnt/vendor/persist/dbg_zygotestart 1
 
 on property:init.svc.odsign=running
     write /mnt/vendor/persist/dbg_odsign_run 1
