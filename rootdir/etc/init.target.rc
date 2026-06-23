@@ -32,10 +32,15 @@ import /vendor/etc/init/hw/init.target.power.rc
 on early-init
     write /proc/sys/kernel/sched_energy_aware 0
 
+on early-init
+    write /dev/kmsg "ALLOCDBG-MARK early-init"
+
 on init
+    write /dev/kmsg "ALLOCDBG-MARK init-before-start"
     # DEBUG (samurai bring-up): start allocator dumper as early as possible, so it
     # runs even if init's main thread later blocks on an on-boot wait. Remove later.
     start allocdbg
+    write /dev/kmsg "ALLOCDBG-MARK init-after-start"
 
     # Boot time fs tuning
     write /sys/block/sda/queue/iostats 0
@@ -109,6 +114,8 @@ on fs
     write /sys/kernel/boot_adsp/boot 1
 
 on late-fs
+    write /dev/kmsg "ALLOCDBG-MARK late-fs"
+    start allocdbg
     # Start services for bootanim
     start servicemanager
     start surfaceflinger
@@ -120,9 +127,11 @@ on late-fs
     mount_all /vendor/etc/fstab.qcom --late
 
 on early-boot
+    write /dev/kmsg "ALLOCDBG-MARK early-boot"
     start vendor.sensors
 
 on boot
+    write /dev/kmsg "ALLOCDBG-MARK boot"
     chown system system /sys/kernel/qvr_external_sensor/fd
 
     # set default schedTune value for camera-daemon
