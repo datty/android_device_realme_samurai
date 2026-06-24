@@ -110,13 +110,6 @@ on fs
 on late-fs
     write /mnt/vendor/persist/dbg_latefs 1
     start allocdbg
-    # DEBUG/likely-fix (samurai bring-up): Android 16 init.rc gates post-fs-data on
-    # `wait_for_prop keystore.module_hash.sent true`. keystore2 only sets that after
-    # pushing APEX module info to KeyMint; this device's keymaster is v40 (<400), so
-    # the push is skipped and the prop can fail to get set -> init hangs in post-fs-data
-    # before zygote and the OPPO watchdog reboots to recovery. Pre-set it here (late-fs
-    # runs before post-fs-data) so the wait passes; keystore2 then no-ops the push.
-    setprop keystore.module_hash.sent true
     # Start services for bootanim
     start servicemanager
     start surfaceflinger
@@ -136,13 +129,6 @@ on early-boot
 # loop, `ls -la /mnt/vendor/persist/dbg_*` in recovery shows how far init got.
 on post-fs-data
     write /mnt/vendor/persist/dbg_postfsdata 1
-    # DEBUG (samurai bring-up): pre-satisfy the odsign gates so init does not
-    # block on the ~37s on-device compile. This vendor block runs before
-    # init.rc's wait_for_prop odsign.key.done (post-fs-data) and
-    # odsign.verification.done (zygote-start), pushing init past the stall to
-    # zygote/system_server so we can see the real next failure. REMOVE later.
-    setprop odsign.key.done 1
-    setprop odsign.verification.done 1
 
 # DEBUG: inline markers (reliable, unlike on-property ones) to bisect the
 # post-fs-data -> on-boot gap where init now stalls. The triggers below fire in
@@ -246,7 +232,7 @@ on property:vendor.usb.controller=*
     setprop sys.usb.controller ${vendor.usb.controller}
 
 # DEBUG (samurai bring-up): graphics allocator hang dumper -> /dev/kmsg
-service allocdbg /vendor/bin/sh /vendor/bin/allocdbg.sh
+service allocdbg /vendor/bin/sh /vendor/bin/allocdbg.sh 1
     class core
     user root
     group root system log
