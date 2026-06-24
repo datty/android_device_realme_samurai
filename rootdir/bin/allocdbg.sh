@@ -1,41 +1,41 @@
 #!/vendor/bin/sh
-# DEBUG (samurai lineage-23 bring-up): capture WHO reboots the device to
-# recovery in late post-fs-data. Earlier versions were `oneshot` + backgrounded,
-# so when the launcher exited init killed the whole process group (cgroup) and
-# the loop died at i~1-3. This version runs the poll loop in the FOREGROUND and
-# the service is NOT oneshot, so init keeps the service (and its backgrounded
-# children) alive until the shutdown SIGTERM at ~34s. The shutdown itself takes
-# ~5s (apexd unmount -> sysrq -> partition unmounts), giving the synced logcat
-# watcher time to flush the "Received sys.powerctl" line that names the culprit.
+# DEBUG (samurai lineage-23 bring-up): pinpoint where init hangs in late
+# post-fs-data (it reaches keystore.boot_level / apexd-snapshotde / verity, then
+# stalls before load-bpf-programs -> zygote, and the OPPO watchdog reboots to
+# recovery ~25-39s). Non-oneshot + foreground so init keeps this alive until the
+# reboot. Every second it OVERWRITES /mnt/vendor/persist/laststate.txt with a
+# full snapshot (running services + process list + init block state); the final
+# snapshot before the watchdog fires shows exactly which service init is blocked
+# on. Uses /proc/uptime (monotonic) since the wall clock jumps during boot.
 # REMOVE with its init.target.rc service + device.mk copy once booting.
 LOG=/mnt/vendor/persist/allocdbg.log
-echo "ADBG START pid=$$" >> $LOG
+STATE=/mnt/vendor/persist/laststate.txt
+echo "ADBG START pid=$$ uptime=$(cat /proc/uptime 2>/dev/null)" >> $LOG
 
-# (1) Watch the live log for the reboot trigger; sync each hit so it survives
-#     the kill that follows immediately after the reboot is requested.
+# Background: synced filtered watch for the reboot trigger (survives the kill).
 /system/bin/logcat -b all -v threadtime 2>/dev/null | while read line; do
     case "$line" in
-        *powerctl*|*Reboot*|*reboot,*|*"shutting down"*|*FATAL*|*wipe*|*set_policy*|*Requesting*)
-            echo "$line" >> /mnt/vendor/persist/rebootwatch.log
-            sync
-            ;;
+        *powerctl*|*Reboot*|*reboot,*|*"shutting down"*|*FATAL*|*wipe*|*Requesting*|*watchdog*|*phoenix*|*Phoenix*)
+            echo "$line" >> /mnt/vendor/persist/rebootwatch.log; sync ;;
     esac
 done &
 
-# (2) Full rolling log for context (rotated so /mnt/vendor/persist won't fill).
-/system/bin/logcat -b all -v threadtime -f /mnt/vendor/persist/bootlog.txt -r 4096 -n 2 2>/dev/null &
-
-# (3) Foreground state poll: keeps this service (and the bg watchers) alive, and
-#     records how far init gets + the last service running before the reboot.
-prev=""
 i=0
-while [ $i -lt 4000 ]; do
+while [ $i -lt 600 ]; do
     i=$((i + 1))
-    cur="apex=$(getprop apexd.status) od=$(getprop init.svc.odsign) vold=$(getprop vold.decrypt) zyg=$(getprop init.svc.zygote) ss=$(getprop init.svc.system_server) bpf=$(getprop init.svc.bpfloader) bc=$(getprop sys.boot_completed)"
-    if [ "$cur" != "$prev" ]; then
-        echo "i=$i $cur" >> $LOG
-        sync
-        prev="$cur"
-    fi
+    {
+        echo "=== iter=$i uptime=$(cat /proc/uptime 2>/dev/null) ==="
+        echo "--- running/restarting init.svc ---"
+        getprop 2>/dev/null | grep "init.svc" | grep -vE "stopped\]$"
+        echo "--- key props ---"
+        echo "apexd.status=$(getprop apexd.status) odsign.key.done=$(getprop odsign.key.done) odsign.verification.done=$(getprop odsign.verification.done) sys.boot_completed=$(getprop sys.boot_completed) vold.decrypt=$(getprop vold.decrypt)"
+        echo "--- init(1) state/wchan ---"
+        grep -E "^State|^Pid" /proc/1/status 2>/dev/null
+        echo -n "wchan: "; cat /proc/1/wchan 2>/dev/null; echo
+        echo "--- procs (blocking-exec suspects) ---"
+        ps -A 2>/dev/null | grep -iE "bpfload|apexd|snapshot|netd|vold|zygote|odsign|odrefresh|derive|keystore|move_time|qcom-|toybox|defaultcontain" | grep -viE "allocdbg|logcat|grep"
+    } > $STATE 2>&1
+    sync
     /vendor/bin/sleep 1
 done
+echo "ADBG loop ended i=$i uptime=$(cat /proc/uptime 2>/dev/null)" >> $LOG
