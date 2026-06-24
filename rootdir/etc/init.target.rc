@@ -139,12 +139,6 @@ on post-fs-data
     setprop sys.usb.configfs 1
     setprop sys.usb.config adb
     start adbd
-    # DEBUG (samurai bring-up): the RTC boots at 1970 and is only corrected to
-    # real time late (after FBE/keystore/odsign). Set a sane time here (this
-    # vendor on-post-fs-data runs before init.rc's FBE/keystore) so those run
-    # with a real clock, in case the 56-year jump breaks CE-key/auth-token
-    # recovery (the recurring /data/data set_policy loop).
-    exec - root root -- /system/bin/toybox date @${ro.build.date.utc}
     # DEBUG (samurai bring-up): pre-satisfy the odsign gates so init does not
     # block on the ~37s on-device compile. This vendor block runs before
     # init.rc's wait_for_prop odsign.key.done (post-fs-data) and
@@ -154,9 +148,21 @@ on post-fs-data
     setprop odsign.verification.done 1
 
 # DEBUG: inline markers (reliable, unlike on-property ones) to bisect the
-# post-fs-data -> on-boot gap where init now stalls.
+# post-fs-data -> on-boot gap where init now stalls. The triggers below fire in
+# order: post-fs-data -> load_persist_props_action -> firmware_mounts_complete
+# -> early-boot -> boot. Whichever dbg_* is the LAST one present pinpoints the
+# stuck stage.
+on load_persist_props_action
+    write /mnt/vendor/persist/dbg_loadpersist 1
+
+on firmware_mounts_complete
+    write /mnt/vendor/persist/dbg_fwmounts 1
+
 on load-bpf-programs
     write /mnt/vendor/persist/dbg_loadbpf 1
+
+on load_bpf_programs
+    write /mnt/vendor/persist/dbg_loadbpf2 1
 
 on bpf-progs-loaded
     write /mnt/vendor/persist/dbg_bpfloaded 1
