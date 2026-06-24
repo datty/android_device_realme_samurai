@@ -262,6 +262,22 @@ service allocdbg /vendor/bin/sh /vendor/bin/allocdbg.sh
     group root system log
     disabled
 
+# DEBUG: second watcher started AFTER apexd activates, so it lives in the
+# post-apex default mount namespace and survives past ~28s (the first allocdbg,
+# started in late-fs/bootstrap namespace, gets killed at the apex switch). This
+# one captures the 28-40s window where the watchdog triggers the reboot.
+service allocdbg2 /vendor/bin/sh /vendor/bin/allocdbg.sh 2
+    class core
+    user root
+    group root system log
+    disabled
+
+on property:apexd.status=activated
+    start allocdbg2
+
+on property:apexd.status=ready
+    start allocdbg2
+
 #pd-mapper
 service vendor.pd_mapper /vendor/bin/pd-mapper
     class core
