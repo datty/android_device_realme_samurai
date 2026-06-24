@@ -23,6 +23,8 @@ done &
 i=0
 while [ $i -lt 600 ]; do
     i=$((i + 1))
+    # Progression timeline (appended): one line/sec showing how far init gets.
+    echo "i=$i up=$(cut -d' ' -f1 /proc/uptime 2>/dev/null) khash=$(getprop keystore.module_hash.sent) apex=$(getprop apexd.status) acfg=$(getprop init.svc.mainline_aconfigd_socket_service) bpf=$(getprop init.svc.bpfloader) netd=$(getprop init.svc.netd) zyg=$(getprop init.svc.zygote) ss=$(getprop init.svc.system_server) bc=$(getprop sys.boot_completed)" >> $LOG
     {
         echo "=== iter=$i uptime=$(cat /proc/uptime 2>/dev/null) ==="
         echo "--- running/restarting init.svc ---"

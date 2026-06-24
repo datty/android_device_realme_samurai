@@ -110,6 +110,13 @@ on fs
 on late-fs
     write /mnt/vendor/persist/dbg_latefs 1
     start allocdbg
+    # DEBUG/likely-fix (samurai bring-up): Android 16 init.rc gates post-fs-data on
+    # `wait_for_prop keystore.module_hash.sent true`. keystore2 only sets that after
+    # pushing APEX module info to KeyMint; this device's keymaster is v40 (<400), so
+    # the push is skipped and the prop can fail to get set -> init hangs in post-fs-data
+    # before zygote and the OPPO watchdog reboots to recovery. Pre-set it here (late-fs
+    # runs before post-fs-data) so the wait passes; keystore2 then no-ops the push.
+    setprop keystore.module_hash.sent true
     # Start services for bootanim
     start servicemanager
     start surfaceflinger
