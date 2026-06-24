@@ -6,6 +6,14 @@
 
 TARGET_DEVICE := samurai
 
+# Ship APEXes uncompressed. With the default compressed (.capex) apexes, apexd
+# decompresses all 26 of them to /data on first boot (~23s, art.capex alone is
+# 20MB). The OPPO PHOENIX boot watchdog (phx_rus_conf.android_time, ~40s) kills
+# the boot before it completes, so the decompressed copies never persist and
+# every boot re-pays the decompression -> permanent reboot-to-recovery loop.
+# Uncompressed apexes activate in ~2s, letting the boot finish in time.
+OVERRIDE_PRODUCT_COMPRESSED_APEX := false
+
 # Add common definitions for Qualcomm
 $(call inherit-product, hardware/qcom-caf/common/common.mk)
 
