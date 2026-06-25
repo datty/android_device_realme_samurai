@@ -1,3 +1,10 @@
+# BPF: samurai ships a 4.14 kernel, but Android 16 (V+/25Q2) mainline networking
+# (netbpfload + netd BpfHandler) hard-gate on kernel >= 4.19 / 5.4 and abort
+# ("V+ platform with kernel version < 4.19.0 is unsupported"), crashlooping netd.
+# The realme kernel has the required bpf feature backports, so report a new-enough
+# version via AOSP's sanctioned override (bpf/headers KernelUtils.h uncachedKernelVersion).
+ro.bpf.kver_override=5.4.0
+
 # Art
 dalvik.vm.dex2oat64.enabled=true
 dalvik.vm.boot-dex2oat-cpu-set=0,1,2,3,4,5,6,7
