@@ -3,7 +3,9 @@
 # ("V+ platform with kernel version < 4.19.0 is unsupported"), crashlooping netd.
 # The realme kernel has the required bpf feature backports, so report a new-enough
 # version via AOSP's sanctioned override (bpf/headers KernelUtils.h uncachedKernelVersion).
-ro.bpf.kver_override=5.4.0
+# Value matches the proven oneplus/sm8150-common reference (same 4.14.357 kernel),
+# which loads the full program set; a lower value would skip programs gated 5.4-5.10.
+ro.bpf.kver_override=5.10.239
 
 # Art
 dalvik.vm.dex2oat64.enabled=true
