@@ -110,6 +110,11 @@ on fs
 on late-fs
     write /mnt/vendor/persist/dbg_latefs 1
     start allocdbg
+    # DEBUG (samurai bring-up): stream /dev/kmsg to persist to capture netbpfload's
+    # bpf verifier error before the bpfloader-failed reboot (logcat dies at the USB
+    # reset; pstore is broken). cat /dev/kmsg dumps the whole ring then follows;
+    # init syncs persist during the reboot so the tail survives. REMOVE later.
+    start kmsgcap
     # Start services for bootanim
     start servicemanager
     start surfaceflinger
@@ -119,6 +124,13 @@ on late-fs
 
     # mount RW partitions which need run fsck
     mount_all /vendor/etc/fstab.qcom --late
+
+# DEBUG (samurai bring-up): kernel-log capture to persist (see late-fs note). REMOVE later.
+service kmsgcap /vendor/bin/sh -c "cat /dev/kmsg > /mnt/vendor/persist/bpf_kmsg.log"
+    class core
+    user root
+    group root system log
+    disabled
 
 on early-boot
     write /mnt/vendor/persist/dbg_earlyboot 1
