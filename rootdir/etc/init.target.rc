@@ -115,6 +115,10 @@ on late-fs
     # reset; pstore is broken). cat /dev/kmsg dumps the whole ring then follows;
     # init syncs persist during the reboot so the tail survives. REMOVE later.
     start kmsgcap
+    # DEBUG (samurai bring-up): netbpfload logs its bpf verifier error to logd
+    # (logcat), NOT kmsg. Stream logcat to persist so we capture it (logcat -f
+    # writes the file directly; needs logd, up by late-fs). REMOVE later.
+    start bpflog
     # Start services for bootanim
     start servicemanager
     start surfaceflinger
@@ -130,6 +134,13 @@ service kmsgcap /vendor/bin/sh -c "cat /dev/kmsg > /mnt/vendor/persist/bpf_kmsg.
     class core
     user root
     group root system log
+    disabled
+
+# DEBUG (samurai bring-up): logcat capture to persist (netbpfload logs there). REMOVE later.
+service bpflog /system/bin/logcat -b all -v threadtime -f /mnt/vendor/persist/bpf_logcat.txt -r 65536 -n 2
+    class core
+    user root
+    group root system log readproc
     disabled
 
 on early-boot
