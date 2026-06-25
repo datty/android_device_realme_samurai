@@ -1,8 +1,3 @@
-# DEBUG (samurai bring-up): disable adb authorization so we can adb in during
-# the pre-UI boot stall (ro.debuggable=0 otherwise forces the "Allow USB
-# debugging?" prompt we can't tap). REMOVE before release.
-ro.adb.secure=0
-
 # Audio
 aaudio.hw_burst_min_usec=2000
 aaudio.mmap_exclusive_policy=2
