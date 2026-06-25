@@ -108,17 +108,6 @@ on fs
     write /sys/kernel/boot_adsp/boot 1
 
 on late-fs
-    write /mnt/vendor/persist/dbg_latefs 1
-    start allocdbg
-    # DEBUG (samurai bring-up): stream /dev/kmsg to persist to capture netbpfload's
-    # bpf verifier error before the bpfloader-failed reboot (logcat dies at the USB
-    # reset; pstore is broken). cat /dev/kmsg dumps the whole ring then follows;
-    # init syncs persist during the reboot so the tail survives. REMOVE later.
-    start kmsgcap
-    # DEBUG (samurai bring-up): netbpfload logs its bpf verifier error to logd
-    # (logcat), NOT kmsg. Stream logcat to persist so we capture it (logcat -f
-    # writes the file directly; needs logd, up by late-fs). REMOVE later.
-    start bpflog
     # Start services for bootanim
     start servicemanager
     start surfaceflinger
@@ -129,87 +118,10 @@ on late-fs
     # mount RW partitions which need run fsck
     mount_all /vendor/etc/fstab.qcom --late
 
-# DEBUG (samurai bring-up): kernel-log capture to persist (see late-fs note). REMOVE later.
-service kmsgcap /vendor/bin/sh -c "cat /dev/kmsg > /mnt/vendor/persist/bpf_kmsg.log"
-    class core
-    user root
-    group root system log
-    disabled
-
-# DEBUG (samurai bring-up): logcat capture to persist (netbpfload logs there). REMOVE later.
-service bpflog /system/bin/logcat -b all -v threadtime -f /mnt/vendor/persist/bpf_logcat.txt -r 65536 -n 2
-    class core
-    user root
-    group root system log readproc
-    disabled
-
 on early-boot
-    write /mnt/vendor/persist/dbg_earlyboot 1
     start vendor.sensors
 
-# DEBUG (samurai bring-up): milestone markers in /metadata (survive reboot,
-# immune to the class_reset that kills the allocdbg service ~12s). After a
-# loop, `ls -la /mnt/vendor/persist/dbg_*` in recovery shows how far init got.
-on post-fs-data
-    write /mnt/vendor/persist/dbg_postfsdata 1
-
-# DEBUG: inline markers (reliable, unlike on-property ones) to bisect the
-# post-fs-data -> on-boot gap where init now stalls. The triggers below fire in
-# order: post-fs-data -> load_persist_props_action -> firmware_mounts_complete
-# -> early-boot -> boot. Whichever dbg_* is the LAST one present pinpoints the
-# stuck stage.
-on load_persist_props_action
-    write /mnt/vendor/persist/dbg_loadpersist 1
-
-on firmware_mounts_complete
-    write /mnt/vendor/persist/dbg_fwmounts 1
-
-on load-bpf-programs
-    write /mnt/vendor/persist/dbg_loadbpf 1
-
-on load_bpf_programs
-    write /mnt/vendor/persist/dbg_loadbpf2 1
-
-on bpf-progs-loaded
-    write /mnt/vendor/persist/dbg_bpfloaded 1
-
-on zygote-start
-    write /mnt/vendor/persist/dbg_zygotestart 1
-
-on property:init.svc.odsign=running
-    write /mnt/vendor/persist/dbg_odsign_run 1
-
-on property:init.svc.odsign=stopped
-    write /mnt/vendor/persist/dbg_odsign_stop 1
-
-on property:odsign.key.done=1
-    write /mnt/vendor/persist/dbg_ods_key 1
-
-on property:odsign.verification.done=1
-    write /mnt/vendor/persist/dbg_ods_verif 1
-
-on property:init.svc.bpfloader=running
-    write /mnt/vendor/persist/dbg_bpf_run 1
-on property:init.svc.bpfloader=stopped
-    write /mnt/vendor/persist/dbg_bpf_stop 1
-on property:init.svc.system_server=running
-    write /mnt/vendor/persist/dbg_ss_run 1
-on property:sys.powerctl=reboot,recovery
-    write /mnt/vendor/persist/dbg_pc_recovery 1
-on property:sys.powerctl=reboot,bootloader
-    write /mnt/vendor/persist/dbg_pc_bootloader 1
-
-on property:init.svc.zygote=running
-    write /mnt/vendor/persist/dbg_zygote_run 1
-
-on property:init.svc.zygote=stopped
-    write /mnt/vendor/persist/dbg_zygote_stop 1
-
-on property:sys.boot_completed=1
-    write /mnt/vendor/persist/dbg_bootcomplete 1
-
 on boot
-    write /mnt/vendor/persist/dbg_on_boot 1
     chown system system /sys/kernel/qvr_external_sensor/fd
 
     # set default schedTune value for camera-daemon
@@ -253,29 +165,6 @@ on boot && property:persist.vendor.usb.controller.default=*
 
 on property:vendor.usb.controller=*
     setprop sys.usb.controller ${vendor.usb.controller}
-
-# DEBUG (samurai bring-up): graphics allocator hang dumper -> /dev/kmsg
-service allocdbg /vendor/bin/sh /vendor/bin/allocdbg.sh 1
-    class core
-    user root
-    group root system log
-    disabled
-
-# DEBUG: second watcher started AFTER apexd activates, so it lives in the
-# post-apex default mount namespace and survives past ~28s (the first allocdbg,
-# started in late-fs/bootstrap namespace, gets killed at the apex switch). This
-# one captures the 28-40s window where the watchdog triggers the reboot.
-service allocdbg2 /vendor/bin/sh /vendor/bin/allocdbg.sh 2
-    class core
-    user root
-    group root system log
-    disabled
-
-on property:apexd.status=activated
-    start allocdbg2
-
-on property:apexd.status=ready
-    start allocdbg2
 
 #pd-mapper
 service vendor.pd_mapper /vendor/bin/pd-mapper
