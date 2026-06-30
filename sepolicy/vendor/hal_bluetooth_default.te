@@ -1,0 +1,1 @@
+allow hal_bluetooth_default vendor_ramdump_vendor_data_file:dir r_dir_perms;

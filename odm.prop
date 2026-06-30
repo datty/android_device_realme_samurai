@@ -44,4 +44,3 @@ vendor.audio.feature.snd_mon.enable=true
 
 # Camera
 ro.camera.notify_nfc=1
-ro.oplus.system.camera.name=com.oplus.camera

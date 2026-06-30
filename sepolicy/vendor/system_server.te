@@ -9,3 +9,5 @@ allow system_server proc_touchpanel:file rw_file_perms;
 allow system_server sysfs_rtc:file r_file_perms;
 allow system_server vendor_sysfs_battery_supply:file { read open getattr };
 allow system_server vendor_sysfs_usb_supply:file { read open getattr };
+allow system_server vendor_file:file r_file_perms;
+

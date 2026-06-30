@@ -38,6 +38,7 @@ ro.oplus.system.camera.flashlight=com.oppo.motor.flashlight
 ro.oplus.camera.video_beauty.prefix=oppo.video.beauty.
 ro.oplus.camera.video.beauty.switch=oppo.switch.video.beauty
 persist.vendor.camera.light_ae.enable=1
+ro.oplus.system.camera.name=com.oplus.camera
 
 # Charger
 ro.charger.enable_suspend=true
@@ -67,6 +68,7 @@ ro.vendor.display.ad.sdr_calib_data=/vendor/etc/OPPO_OLED_AD_calib.cfg
 # HWUI
 debug.hwui.use_hint_manager=true
 debug.hwui.target_cpu_time_percent=30
+ro.hwui.render_ahead=3
 
 # IOP
 vendor.iop.enable_prefetch_ofr=1
@@ -142,3 +144,7 @@ persist.vendor.delta_time.enable=true
 
 # WiFi
 config.disable_rtt=true
+wifi.supplicant_scan_interval=120
+
+# Verity
+ro.apk_verity.mode=2

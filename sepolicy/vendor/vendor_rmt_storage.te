@@ -1,1 +1,3 @@
 allow vendor_rmt_storage vendor_sysfs_soc_sensitive:file r_file_perms;
+get_prop(vendor_rmt_storage, vendor_audio_debug_prop)
+

@@ -1,0 +1,12 @@
+# Diag
+userdebug_or_eng(`
+  allow {
+    hal_audio_default
+    rild
+    vendor_cnd
+    vendor_dpmd
+    vendor_ims
+    vendor_netmgrd
+    vendor_qti
+  } vendor_diag_device:chr_file rw_file_perms;
+')
