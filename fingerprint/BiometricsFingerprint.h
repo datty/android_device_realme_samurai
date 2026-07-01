@@ -19,6 +19,7 @@
 #include <aidl/vendor/oplus/hardware/syshelper/IUdfpsHelper.h>
 
 #include <android-base/properties.h>
+#include <android-base/strings.h>
 #include <android/hardware/biometrics/fingerprint/2.1/types.h>
 #include <android/hardware/biometrics/fingerprint/2.2/IBiometricsFingerprintClientCallback.h>
 #include <android/hardware/biometrics/fingerprint/2.3/IBiometricsFingerprint.h>
@@ -135,9 +136,17 @@ class BiometricsFingerprint : public IBiometricsFingerprint,
     }
 
     bool isUdfps() {
-        // We need to rely on `persist.vendor.fingerprint.sensor_type` here because we can't get our
-        // sensorId from anywhere.
+        // We need to rely on `persist.vendor.fingerprint.sensor_type` here because we can't get
+        // our sensorId from anywhere.
         return GetProperty("persist.vendor.fingerprint.sensor_type", "") == "optical";
+    }
+
+    // Returns true if this is an Under-Film Fingerprint (UFF) sensor variant.
+    // UFF sensors handle onFingerDown/Up internally; forwarding them causes double-processing.
+    // Ported from hardware/oplus BiometricsFingerprint.
+    bool isUff() {
+        return android::base::StartsWith(
+                GetProperty("persist.vendor.fingerprint.version", ""), "UFF ");
     }
 
     bool setDimlayerHbm(unsigned int value) {

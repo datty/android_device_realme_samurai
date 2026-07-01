@@ -32,10 +32,18 @@ namespace implementation {
 
 BiometricsFingerprint::BiometricsFingerprint() {
     mOplusBiometricsFingerprint = IOplusBiometricsFingerprint::getService();
-    mOplusBiometricsFingerprint->setHalCallback(this);
+    if (mOplusBiometricsFingerprint == nullptr) {
+        ALOGE("Failed to get IOplusBiometricsFingerprint service");
+    } else {
+        mOplusBiometricsFingerprint->setHalCallback(this);
+    }
 
     std::string instanceName = std::string() + IUdfpsHelper::descriptor + "/default";
-    mOplusUdfpsHelper = IUdfpsHelper::fromBinder(ndk::SpAIBinder(AServiceManager_waitForService(instanceName.c_str())));
+    mOplusUdfpsHelper = IUdfpsHelper::fromBinder(
+            ndk::SpAIBinder(AServiceManager_waitForService(instanceName.c_str())));
+    if (mOplusUdfpsHelper == nullptr) {
+        ALOGE("Failed to get IUdfpsHelper service");
+    }
 }
 
 Return<uint64_t> BiometricsFingerprint::setNotify(
@@ -101,7 +109,8 @@ Return<void> BiometricsFingerprint::onFingerDown(uint32_t x, uint32_t y, float m
         setDimlayerHbm(1);
     }
     setFpPress(1);
-    return mOplusBiometricsFingerprint->onFingerDown(x, y, minor, major);
+    // UFF sensors handle finger events internally; forwarding causes double-processing.
+    return isUff() ? Void() : mOplusBiometricsFingerprint->onFingerDown(x, y, minor, major);
 }
 
 Return<void> BiometricsFingerprint::onFingerUp() {
@@ -109,7 +118,8 @@ Return<void> BiometricsFingerprint::onFingerUp() {
     if (!this->isEnrolling) {
         setDimlayerHbm(0);
     }
-    return mOplusBiometricsFingerprint->onFingerUp();
+    // UFF sensors handle finger events internally; forwarding causes double-processing.
+    return isUff() ? Void() : mOplusBiometricsFingerprint->onFingerUp();
 }
 
 Return<void> BiometricsFingerprint::onEnrollResult(uint64_t deviceId, uint32_t fingerId,

@@ -223,9 +223,12 @@ PRODUCT_PACKAGES += \
 
 # Fingerprint
 PRODUCT_PACKAGES += \
-    android.hardware.biometrics.fingerprint@2.3-service.oplus
+    android.hardware.biometrics.fingerprint@2.3-service.samurai
 
-$(call soong_config_set,surfaceflinger,udfps_lib,//hardware/oplus:libudfps_extension.oplus)
+# UDFPS extension: device-local build using sysfs/oppo_display paths.
+# hardware/oplus libudfps_extension.oplus uses /dev/oplus_display ioctls
+# which do not exist on samurai (device has /dev/oppo_display via sysfs).
+$(call soong_config_set,surfaceflinger,udfps_lib,//device/realme/samurai/fingerprint:libudfps_extension.samurai)
 
 # fingerprint (IFAA)
 PRODUCT_PACKAGES += \

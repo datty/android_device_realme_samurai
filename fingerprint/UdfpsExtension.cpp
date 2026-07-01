@@ -1,30 +1,34 @@
 /*
- * Copyright (C) 2020 The LineageOS Project
+ * Copyright (C) 2020-2025 The LineageOS Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 #include <compositionengine/UdfpsExtension.h>
+
+// Use whichever sde_drm header is available; provides FOD_PRESSED_LAYER_ZORDER.
+#if __has_include(<display/drm/sde_drm.h>)
+#include <display/drm/sde_drm.h>
+#elif __has_include(<drm/sde_drm.h>)
 #include <drm/sde_drm.h>
+#endif
 
-uint32_t getUdfpsZOrder(uint32_t z, bool touched) {
-    return touched ? z | FOD_PRESSED_LAYER_ZORDER : z;
-}
-
+// Dim layer z-order for UDFPS on SM8150 (oppo_display / SDE controller).
+// Hardcoded to match the display controller expectation on samurai.
 uint32_t getUdfpsDimZOrder(uint32_t z) {
-    return z | FOD_PRESSED_LAYER_ZORDER;
+    return 0x41000005;
 }
 
-uint64_t getUdfpsUsageBits(uint64_t usageBits, bool) {
+// Finger-pressed layer z-order: uses FOD_PRESSED_LAYER_ZORDER from sde_drm.h
+// when available, falling back to a known-good hardcoded value.
+uint32_t getUdfpsZOrder(uint32_t z, bool touched) {
+#ifdef FOD_PRESSED_LAYER_ZORDER
+    return touched ? z | FOD_PRESSED_LAYER_ZORDER : z;
+#else
+    return touched ? 0x41000033 : z;
+#endif
+}
+
+uint64_t getUdfpsUsageBits(uint64_t usageBits, bool /*touched*/) {
     return usageBits;
 }
