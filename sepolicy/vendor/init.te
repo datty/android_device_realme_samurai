@@ -1,7 +1,6 @@
 allow init adsprpcd_file:file mounton;
 allow init { bt_firmware_file firmware_file }:filesystem getattr;
 allow init hal_audio_default:binder call;
-allow init oppo_ver_proc:file { read open getattr };
 allow init vendor_proc_oplus_version:file r_file_perms;
 allow init proc_sensor:file rw_file_perms;
 allow init shell_data_file:file { getattr setattr };
