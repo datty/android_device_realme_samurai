@@ -108,6 +108,8 @@ persist.vendor.dpmhalservice.enable=1
 drm.service.enabled=true
 
 # Fingerprint
+persist.vendor.fingerprint.sensor_type=optical
+persist.vendor.fingerprint.version=Goodix
 persist.vendor.qfp=true
 
 # FRP
