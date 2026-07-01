@@ -1,4 +1,4 @@
-type commondcs_hwservice, hwservice_manager_type;
+# commondcs_hwservice is declared as vendor_hal_commondcs_hwservice in hardware/oplus upstream
 type hal_cryptoeng_hwservice, hwservice_manager_type;
 type hal_engsensor_hwservice, hwservice_manager_type;
 type hal_fingerprintpay_hwservice, hwservice_manager_type;

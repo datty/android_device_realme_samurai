@@ -25,5 +25,5 @@ get_prop(hal_fingerprint_default, oppo_fp_prop)
 set_prop(hal_fingerprint_default, oppo_fp_prop)
 get_prop(hal_fingerprint_default, vendor_adsprpc_prop)
 
-allow hal_fingerprint_default commondcs_hwservice:hwservice_manager find;
+allow hal_fingerprint_default vendor_hal_commondcs_hwservice:hwservice_manager find;
 allow hal_fingerprint_default hal_orms_hwservice:hwservice_manager find;
