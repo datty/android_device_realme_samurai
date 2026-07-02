@@ -6,6 +6,13 @@
 
 TARGET_DEVICE := samurai
 
+# ADB without auth prompts and USB defaulting to ADB mode on boot.
+PRODUCT_SYSTEM_PROPERTIES += \
+    ro.adb.secure=0
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.usb.config=adb
+
 # Ship APEXes uncompressed. With the default compressed (.capex) apexes, apexd
 # decompresses all 26 of them to /data on first boot (~23s, art.capex alone is
 # 20MB). The OPPO PHOENIX boot watchdog (phx_rus_conf.android_time, ~40s) kills
