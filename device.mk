@@ -247,6 +247,11 @@ PRODUCT_PACKAGES += \
     libqti_vndfwk_detect \
     libqti_vndfwk_detect.vendor
 
+# Shims for legacy vendor/odm blobs
+PRODUCT_PACKAGES += \
+    libba_s \
+    libcryp_s
+
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.vendor.qti.va_aosp.support=1
 

@@ -1,0 +1,23 @@
+// Shims for legacy vendor blobs on samurai.
+//
+// libbase_s: shims android::base::WriteStringToFd(const std::string&, borrowed_fd)
+//            which was removed/changed to std::string_view in newer libbase.
+// libcrypt_s: shims BoringSSL's CBS_init which is hidden/removed in newer libcrypto.
+
+cc_library_shared {
+    name: "libba_s",
+    srcs: ["libbase_shim.cpp"],
+    shared_libs: [
+        "libbase",
+    ],
+    vendor: true,
+}
+
+cc_library_shared {
+    name: "libcryp_s",
+    srcs: ["libcrypto_shim.cpp"],
+    shared_libs: [
+        "libcrypto",
+    ],
+    vendor: true,
+}
