@@ -6,3 +6,6 @@ dontaudit linkerconfig self:capability kill;
 
 # b/152468658
 dontaudit vdc self:capability kill;
+
+# kworker threads signal kernel processes internally (e.g. memory reclaim, OOM).
+dontaudit kernel self:capability kill;
