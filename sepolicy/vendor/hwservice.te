@@ -1,7 +1,7 @@
-# commondcs_hwservice is declared as vendor_hal_commondcs_hwservice in hardware/oplus upstream
+# Device-local HIDL hwservices not declared by hardware/oplus.
+# vendor_hal_commondcs_hwservice and vendor_hal_orms_hwservice come from oplus.
 type hal_cryptoeng_hwservice, hwservice_manager_type;
 type hal_engsensor_hwservice, hwservice_manager_type;
+# HIDL fingerprintpay@1.0 (AIDL path uses oplus service_contexts)
 type hal_fingerprintpay_hwservice, hwservice_manager_type;
 type hal_nxpnfc_hwservice, hwservice_manager_type;
-type hal_orms_hwservice, hwservice_manager_type;
-

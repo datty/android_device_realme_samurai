@@ -1,11 +1,11 @@
-type cam_proc, proc_type, fs_type;
-type fp_proc, proc_type, fs_type;
+# Device-specific types not provided by hardware/oplus.
+# Paths covered by hardware/oplus (vendor_proc_display, vendor_proc_fingerprint,
+# vendor_proc_camera, vendor_proc_oplus_version, vendor_persist_camera_file,
+# vendor_proc_oplus_als_file, vendor_sysfs_sde_crtc, etc.) use those types.
+
 type nv_data_file, file_type, data_file_type, core_data_file_type;
-type oppo_ver_proc, proc_type, fs_type;
-type persist_camera_file, file_type;
 type proc_devinfo, proc_type, fs_type;
-type proc_sensor, proc_type, fs_type;
-type proc_touchpanel, proc_type, fs_type;
 type public_adsprpcd_file, file_type;
 type sysfs_fps, sysfs_type, fs_type;
+# samurai kernel uses the legacy oppo_display sysfs (not oplus_display)
 type sysfs_oppo_display, sysfs_type, fs_type;

@@ -1,8 +1,6 @@
 # Block devices
 /dev/block/bootdevice/by-name/persist                                                                   u:object_r:vendor_persist_block_device:s0
 
-# Camera
-
 # CryptoEng
 /(odm|vendor/odm)/bin/hw/vendor\.oplus\.hardware\.cryptoeng@1\.0-service                                u:object_r:hal_cryptoeng_default_exec:s0
 
@@ -12,12 +10,8 @@
 # (e.g. Google Camera App)
 /mnt/vendor/dsp/fastrpc_shell_3                                                                         u:object_r:public_adsprpcd_file:s0
 
-# Fingerprint
+# Fingerprint (device-local wrapper; oplus labels goodix_fp + vendor FP service)
 /vendor/bin/hw/android\.hardware\.biometrics\.fingerprint@2\.3-service\.samurai                         u:object_r:hal_fingerprint_default_exec:s0
-/(odm|vendor/odm)/bin/hw/vendor\.oplus\.hardware\.biometrics\.fingerprint@2\.1-service                  u:object_r:hal_fingerprint_default_exec:s0
-
-# Health
-/vendor/bin/hw/android\.hardware\.health@2\.1-service\.samurai                                          u:object_r:hal_health_default_exec:s0
 
 # Modem reason
 /dev/mdmreason                                                                                          u:object_r:mdmreason_device:s0
@@ -32,7 +26,7 @@
 /dev/block/platform/soc/1d84000.ufshc/by-name/reserve5                                                  u:object_r:vendor_modem_efs_partition_device:s0
 
 # Oplus engsensor
-/(odm|vendor/odm)/bin/hw/vendor.oplus.hardware.engsensor@1.0-service                                  u:object_r:hal_engsensor_default_exec:s0
+/(odm|vendor/odm)/bin/hw/vendor.oplus.hardware.engsensor@1.0-service                                    u:object_r:hal_engsensor_default_exec:s0
 
 # Power supply
 /sys/devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm8150b@2:qcom,qpnp-smb5/power_supply/ac(/.*)? u:object_r:sysfs_battery_supply:s0
@@ -47,17 +41,10 @@
 # System Helper Service
 /(vendor|system/vendor)/bin/hw/vendor.oplus.hardware.syshelper.service                                  u:object_r:hal_syshelper_default_exec:s0
 
-# Touch HAL
-/vendor/bin/hw/vendor\.lineage\.touch@1\.0-service\.samurai                                             u:object_r:hal_lineage_touch_default_exec:s0
-
 # USB
 /sys/class/power_supply/usb/otg_switch                                                                  u:object_r:sysfs_usb_supply:s0
 /sys/devices/virtual/android_usb/android0/state                                                         u:object_r:sysfs_usb_supply:s0
 
-# Vibrator
+# Vibrator nodes (oplus vibrator service labels the binary)
 /sys/class/leds/vibrator(/.*)?                                                                          u:object_r:sysfs_vibrator:s0
 /sys/devices/platform/soc/89c000.i2c/i2c-2/2-005a/leds/vibrator(/.*)?                                   u:object_r:sysfs_vibrator:s0
-/(vendor|system/vendor)/bin/hw/vendor\.qti\.hardware\.vibrator\.service\.samurai                        u:object_r:hal_vibrator_default_exec:s0
-
-# Widevine
-/(odm|vendor/odm)/bin/hw/android\.hardware\.drm@1\.3-service\.widevine                                  u:object_r:vendor_hal_drm_widevine_exec:s0

@@ -26,12 +26,12 @@ persist.sys.oppo.region             u:object_r:vendor_camera_prop:s0
 persist.watermark.dumpimg           u:object_r:vendor_camera_prop:s0
 ro.oppo.version                     u:object_r:vendor_camera_prop:s0
 
-# Fingerprint
+# Fingerprint (device-local goodix props; bulk vendor.fingerprint.* is in oplus)
 oplus.optical.goodix.fp             u:object_r:oppo_fp_prop:s0
 vendor.fingerprint.optical.goodix.hal.retry u:object_r:oppo_fp_prop:s0
 vendor.fingerprint.cali             u:object_r:oppo_fp_prop:s0
 
-# Google camera hal read only props
+# Google camera HAL read-only props
 ro.camera.res.fmq.size              u:object_r:camera_ro_prop:s0
 ro.camera.req.fmq.size              u:object_r:camera_ro_prop:s0
 
@@ -46,8 +46,6 @@ vendor.nfc_se.config_ready          u:object_r:vendor_nfc_nq_prop:s0
 
 # Perf
 perf_profile                        u:object_r:vendor_perf_prop:s0
-
-# Project
 
 # RIL
 oppo.eng.factory.no                 u:object_r:vendor_radio_prop:s0

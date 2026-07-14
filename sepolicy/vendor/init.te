@@ -2,7 +2,11 @@ allow init adsprpcd_file:file mounton;
 allow init { bt_firmware_file firmware_file }:filesystem getattr;
 allow init hal_audio_default:binder call;
 allow init vendor_proc_oplus_version:file r_file_perms;
-allow init proc_sensor:file rw_file_perms;
+# init.oppo.rc chowns/chmods ALS and pressure calibration nodes
+allow init vendor_proc_oplus_als_file:dir search;
+allow init vendor_proc_oplus_als_file:file { getattr setattr };
+allow init vendor_proc_eng_cali_file:dir search;
+allow init vendor_proc_eng_cali_file:file { getattr setattr };
 allow init shell_data_file:file { getattr setattr };
 allow init socket_device:sock_file { create setattr unlink };
 allow init vendor_sysfs_kgsl:file w_file_perms;
