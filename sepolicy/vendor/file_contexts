@@ -13,6 +13,9 @@
 # Fingerprint (device-local wrapper; oplus labels goodix_fp + vendor FP service)
 /vendor/bin/hw/android\.hardware\.biometrics\.fingerprint@2\.3-service\.samurai                         u:object_r:hal_fingerprint_default_exec:s0
 
+# Health (proprietary binary installed as .samurai; AOSP unit is overridden/disabled)
+/vendor/bin/hw/android\.hardware\.health@2\.1-service\.samurai                                          u:object_r:hal_health_default_exec:s0
+
 # Modem reason
 /dev/mdmreason                                                                                          u:object_r:mdmreason_device:s0
 
@@ -28,9 +31,9 @@
 # Oplus engsensor
 /(odm|vendor/odm)/bin/hw/vendor.oplus.hardware.engsensor@1.0-service                                    u:object_r:hal_engsensor_default_exec:s0
 
-# Power supply
-/sys/devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm8150b@2:qcom,qpnp-smb5/power_supply/ac(/.*)? u:object_r:sysfs_battery_supply:s0
-/sys/devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm8150b@2:qcom,qpnp-smb5/power_supply/battery(/.*)? u:object_r:sysfs_battery_supply:s0
+# Power supply (match qcom vendor_sysfs_battery_supply used by healthd/system_*)
+/sys/devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm8150b@2:qcom,qpnp-smb5/power_supply/ac(/.*)? u:object_r:vendor_sysfs_battery_supply:s0
+/sys/devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm8150b@2:qcom,qpnp-smb5/power_supply/battery(/.*)? u:object_r:vendor_sysfs_battery_supply:s0
 
 # RTC
 /sys/class/rtc/rtc0/hctosys                                                                             u:object_r:sysfs_rtc:s0
