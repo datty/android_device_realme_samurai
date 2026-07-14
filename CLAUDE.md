@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is the **LineageOS device tree** for the **Realme X2 Pro** (codename `samurai`, model RMX1931). It sits between the generic LineageOS platform and the device's hardware, providing:
 
 - Hardware configuration for Qualcomm Snapdragon 855+ (msmnile/sm8150)
-- HAL (Hardware Abstraction Layer) implementations for fingerprint, sensors, vibrator, touch, and audio
+- Device-local HALs for fingerprint (UDFPS) and sensors subhal; shared oplus HALs for touch/vibrator/livedisplay
 - Device-specific overlays, init scripts, and SELinux policies
 - Build system integration for LineageOS
 
@@ -60,12 +60,14 @@ The LineageOS manifest (`.repo/local_manifests/`) must include entries for these
 
 ## Key Directories
 
-- **`fingerprint/`** — HIDL 2.3 fingerprint HAL with UDFPS (under-display) support. Bridges the vendor goodix blob via `BiometricsFingerprintShim`, and controls display layer state (`dimlayer_hbm`) on finger up/down events.
-- **`sensors/`** — HIDL 2.1 multihal sensors implementation. Aggregates the QCOM sensors HAL and applies a custom ALS (ambient light sensor) correction via `AlsCorrection.cpp`.
-- **`syshelper/`** — OPLUS system helper AIDL service; coordinates UDFPS-related display operations. Fingerprint HAL communicates with it to manage the dim layer z-order.
-- **`als/`** — LineageOS `vendor.lineage.oplus_als` service; feeds corrected ALS data to the framework auto-brightness.
+- **`fingerprint/`** — HIDL 2.3 fingerprint HAL with UDFPS support. Wraps the vendor goodix blob and drives `dimlayer_hbm` via `/sys/kernel/oppo_display` (syshelper AIDL + UDFPS extension for SurfaceFlinger).
+- **`sensors/`** — OPLUS sensor subhal (`sensors.oplus.samurai`) loaded by AOSP multihal via `configs/sensors/hals.conf`.
+- **`syshelper/`** — OPLUS system helper AIDL service; coordinates UDFPS-related display operations.
+- **`als/`** — LineageOS `vendor.lineage.oplus_als` service; feeds corrected ALS data to framework auto-brightness.
+- **`touch/include/`** — Gesture config for `vendor.lineage.touch-service.oplus` (soong_config INCLUDE_DIR).
 - **`init/`** — `libinit_samurai` shared library loaded by init; detects device variant (Global `RMX1931L1` vs China `RMX1931CN`) and overrides build properties accordingly.
-- **`sepolicy/`** — Device-specific SELinux `.te` rules and file contexts. Extends the QCOM base policy.
+- **`sepolicy/`** — Device-specific SELinux rules on top of qcom + `hardware/oplus` policy (prefer oplus type labels; keep only samurai-unique paths such as `sysfs_oppo_display`).
+- **`shims/`** — Tiny libbase/libcrypto shims for legacy ODM blobs (dspservice, ATFWD-daemon).
 - **`overlay*/`** — RRO (Runtime Resource Overlay) packages that patch framework resources at runtime (SystemUI, Settings, Telephony, WiFi, etc.). `overlay-lineage/` is for LineageOS-specific overrides.
 - **`rootdir/`** — Files copied verbatim to the root filesystem: `bin/` (init shell scripts), `etc/` (init RC files, `fstab.qcom`).
 - **`audio/`** — ALSA mixer paths, audio platform info, sound trigger config, and ACDB calibration data for the WCD9340 codec.
