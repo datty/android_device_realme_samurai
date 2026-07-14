@@ -85,15 +85,9 @@ BOARD_USES_ALSA_AUDIO := true
 # Display
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
-#MAX_VIRTUAL_DISPLAY_DIMENSION := 4096
 TARGET_DISABLED_UBWC := true
-#TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 TARGET_SCREEN_DENSITY := 480
-#TARGET_USES_DISPLAY_RENDER_INTENTS := true
 TARGET_USES_COLOR_METADATA := true
-#TARGET_USES_DRM_PP := true
-#TARGET_USES_GRALLOC4 := true
-#TARGET_USES_HWC2 := true
 TARGET_USES_ION := true
 TARGET_HAS_HDR_DISPLAY := true
 TARGET_HAS_WIDE_COLOR_DISPLAY := true
@@ -154,8 +148,8 @@ VENDOR_SECURITY_PATCH := 2021-11-05
 
 # Sepolicy
 include device/qcom/sepolicy_vndr/SEPolicy.mk
+# hardware/oplus SEPolicy.mk already pulls in device/lineage/sepolicy/libperfmgr
 include hardware/oplus/sepolicy/qti/SEPolicy.mk
-include device/lineage/sepolicy/libperfmgr/sepolicy.mk
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
 SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/public
 BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
