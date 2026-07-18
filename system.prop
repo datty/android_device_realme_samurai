@@ -34,7 +34,10 @@ ro.camera.hfr.enable=1
 ro.camera.relight.enable=0
 ro.camera.attr.detect.enable=1
 ro.camera.temperature.limit=470
-ro.oplus.system.camera.flashlight=com.oppo.motor.flashlight
+# Do NOT set ro.oplus.system.camera.flashlight=com.oppo.motor.flashlight —
+# that package is for pop-up motor devices (e.g. Realme X2). X2 Pro (samurai)
+# has a fixed front camera; motor flashlight breaks QS torch / brightness path.
+# Standard CameraManager torch API is used instead.
 ro.oplus.camera.video_beauty.prefix=oppo.video.beauty.
 ro.oplus.camera.video.beauty.switch=oppo.switch.video.beauty
 persist.vendor.camera.light_ae.enable=1
