@@ -219,7 +219,8 @@ PRODUCT_PACKAGES += \
 # DRM
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.4.vendor \
-    android.hardware.drm-service.clearkey
+    android.hardware.drm-service.clearkey \
+    wvmkiller
 
 # Fingerprint
 PRODUCT_PACKAGES += \
@@ -495,9 +496,12 @@ $(call soong_config_set,OPLUS_LINEAGE_TOUCH_HAL,INCLUDE_DIR,$(LOCAL_PATH)/touch/
 PRODUCT_PACKAGES += \
     android.hardware.usb@1.3-service.dual_role_usb
 
-# Vibrator
+# Vibrator (hardware/oplus QTI path; aw8697 haptic via /sys/class/leds/vibrator)
 PRODUCT_PACKAGES += \
     vendor.qti.hardware.vibrator.service.oplus
+
+PRODUCT_COPY_FILES += \
+    vendor/qcom/opensource/vibrator/excluded-input-devices.xml:$(TARGET_COPY_OUT_VENDOR)/etc/excluded-input-devices.xml
 
 # WiFi
 PRODUCT_PACKAGES += \
