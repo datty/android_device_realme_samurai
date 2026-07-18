@@ -97,7 +97,7 @@
       "Name": "CPUBigPlusClusterMaxFreq",
       "Path": "/sys/devices/system/cpu/cpu7/cpufreq/scaling_max_freq",
       "Values": [
-        "2841600",
+        "2956800",
         "2534400",
         "2227200",
         "2016000",
@@ -112,7 +112,7 @@
       "Name": "CPUBigPlusClusterMinFreq",
       "Path": "/sys/devices/system/cpu/cpu7/cpufreq/scaling_min_freq",
       "Values": [
-        "2841600",
+        "2956800",
         "1497600",
         "1401600",
         "1286400",
@@ -141,24 +141,37 @@
     },
     {
       "Name": "GPUMaxFreq",
-      "Path": "/sys/class/kgsl/kgsl-3d0/devfreq/max_freq",
+      "Path": "/sys/class/kgsl/kgsl-3d0/max_pwrlevel",
       "Values": [
-        "585000000",
-        "427000000"
+        "0",
+        "1",
+        "2"
       ],
       "DefaultIndex": 0,
-      "ResetOnInit": true
+      "ResetOnInit": true,
+      "Comments": [
+        "0 => ~675-692 MHz",
+        "1 => mid",
+        "2 => lower"
+      ]
     },
     {
       "Name": "GPUMinFreq",
-      "Path": "/sys/class/kgsl/kgsl-3d0/devfreq/min_freq",
+      "Path": "/sys/class/kgsl/kgsl-3d0/min_pwrlevel",
       "Values": [
-        "585000000",
-        "427000000",
-        "345000000",
-        "257000000"
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
       ],
-      "ResetOnInit": true
+      "ResetOnInit": true,
+      "DefaultIndex": 5,
+      "Comments": [
+        "0 => high min floor",
+        "5 => allow lowest GPU clocks"
+      ]
     },
     {
       "Name": "GPUBusMinFreq",
@@ -402,8 +415,8 @@
       "Name": "DoubleTapToWakeEnable",
       "Path": "/proc/touchpanel/double_tap_enable",
       "Values": [
-          "0",
-          "1"
+        "0",
+        "1"
       ],
       "DefaultIndex": 0
     }
@@ -437,7 +450,7 @@
       "PowerHint": "SUSTAINED_PERFORMANCE",
       "Node": "GPUMaxFreq",
       "Duration": 0,
-      "Value": "427000000"
+      "Value": "2"
     },
     {
       "PowerHint": "INTERACTION",
@@ -556,7 +569,7 @@
       "PowerHint": "LAUNCH",
       "Node": "CPUBigPlusClusterMaxFreq",
       "Duration": 1000,
-      "Value": "2841600"
+      "Value": "2956800"
     },
     {
       "PowerHint": "LAUNCH",
@@ -568,7 +581,7 @@
       "PowerHint": "LAUNCH",
       "Node": "CPUBigPlusClusterMinFreq",
       "Duration": 1000,
-      "Value": "2841600"
+      "Value": "2956800"
     },
     {
       "PowerHint": "LAUNCH",
@@ -652,7 +665,7 @@
       "PowerHint": "CAMERA_LAUNCH",
       "Node": "CPUBigPlusClusterMaxFreq",
       "Duration": 1000,
-      "Value": "2841600"
+      "Value": "2956800"
     },
     {
       "PowerHint": "CAMERA_LAUNCH",
@@ -664,7 +677,7 @@
       "PowerHint": "CAMERA_LAUNCH",
       "Node": "CPUBigPlusClusterMinFreq",
       "Duration": 1000,
-      "Value": "2841600"
+      "Value": "2956800"
     },
     {
       "PowerHint": "CAMERA_LAUNCH",
@@ -910,7 +923,7 @@
       "PowerHint": "CAMERA_SHOT",
       "Node": "CPUBigPlusClusterMaxFreq",
       "Duration": 1000,
-      "Value": "2841600"
+      "Value": "2956800"
     },
     {
       "PowerHint": "CAMERA_SHOT",
@@ -922,7 +935,7 @@
       "PowerHint": "CAMERA_SHOT",
       "Node": "CPUBigPlusClusterMinFreq",
       "Duration": 1000,
-      "Value": "2841600"
+      "Value": "2956800"
     },
     {
       "PowerHint": "CAMERA_SHOT",
@@ -970,13 +983,13 @@
       "PowerHint": "EXPENSIVE_RENDERING",
       "Node": "GPUMinFreq",
       "Duration": 0,
-      "Value": "427000000"
+      "Value": "2"
     },
     {
       "PowerHint": "EXPENSIVE_RENDERING",
       "Node": "GPUMaxFreq",
       "Duration": 0,
-      "Value": "585000000"
+      "Value": "0"
     },
     {
       "PowerHint": "ML_ACC",
