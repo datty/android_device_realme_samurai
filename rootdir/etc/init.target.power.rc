@@ -111,8 +111,10 @@ on property:vendor.setup.power=1
     setprop vendor.powerhal.init 1
 
 on boot
-    # Disable console_suspend to get better logging for kernel crashes
-    write /sys/module/printk/parameters/console_suspend N
+    # Allow the console to suspend so it does not block deeper LPM/suspend.
+    # (Use console_suspend=N only when actively debugging kernel crashes.)
+    write /sys/module/printk/parameters/console_suspend Y
 
-    # Enable suspend to idle mode to reduce latency during suspend/resume
-    write /sys/power/mem_sleep "s2idle"
+    # Prefer suspend-to-RAM ("deep") over s2idle for real idle power.
+    # boot_completed also sets this; keep them consistent.
+    write /sys/power/mem_sleep "deep"
