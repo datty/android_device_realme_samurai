@@ -64,7 +64,7 @@ on boot
 
     # OTG
     chown system system /sys/class/power_supply/usb/otg_switch
-    chmod 06666 /sys/class/power_supply/usb/otg_switch
+    chmod 0666 /sys/class/power_supply/usb/otg_switch
 
     # wakeup reason
     chown system system /sys/kernel/wakeup_reasons/wakeup_stastisc_reset
@@ -116,13 +116,14 @@ on boot
     chmod 0666 /sys/kernel/oppo_display/aod_light_mode_set
     chmod 0666 /sys/kernel/oppo_display/serial_number
     chmod 0666 /sys/kernel/oppo_display/hdr10
-    chown 0666 /sys/kernel/oppo_display/fp_state
+    chmod 0666 /sys/kernel/oppo_display/fp_state
 
     # Touchpanel
     chown system system /proc/touchpanel/tp_fw_update
     chown system system /proc/touchpanel/oplus_tp_limit_enable
     chown system system /proc/touchpanel/oplus_tp_direction
     chown system system /proc/touchpanel/double_tap_enable
+    chown system system /proc/touchpanel/double_tap_enable_indep
     chown system system /proc/touchpanel/coordinate
     chown system system /proc/touchpanel/game_switch_enable
     chown system system /proc/touchpanel/fd_enable
@@ -131,6 +132,12 @@ on boot
     chown system system /proc/touchpanel/fp_enable
     chown system system /proc/touchpanel/touch_filter
     chown system system /proc/touchpanel/baseline_test
+    # vendor.lineage.touch-service.oplus reads/writes these for gestures
+    chmod 0660 /proc/touchpanel/double_tap_enable
+    chmod 0660 /proc/touchpanel/double_tap_enable_indep
+    chmod 0660 /proc/touchpanel/game_switch_enable
+    chmod 0660 /proc/touchpanel/oplus_tp_direction
+    chmod 0660 /proc/touchpanel/oplus_tp_limit_enable
 
     # ALS
     chown system system /proc/sensor/als_cali/blue_max_lux
@@ -186,7 +193,7 @@ on property:ro.board.platform=msmnile && property:ro.baseband=msm && property:ro
     chown system system /dev/stune/rt/cgroup.procs
     chmod 0666 /dev/stune/background/cgroup.procs
     chmod 0666 /dev/stune/top-app/cgroup.procs
-    chmod 0666 /dev/stune/foregroud/cgroup.procs
+    chmod 0666 /dev/stune/foreground/cgroup.procs
     chmod 0666 /dev/stune/rt/cgroup.procs
 
     chmod 0664 /dev/stune/foreground/schedtune.boost
