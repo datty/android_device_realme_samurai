@@ -164,6 +164,13 @@ on property:sys.boot_completed=1
     write /sys/module/lpm_levels/parameters/sleep_disabled 0
     write /sys/module/printk/parameters/console_suspend Y
 
+    # Clear stuck UDFPS / HBM panel nodes that can keep the panel path active
+    # after screen-off (mHoldingDisplaySuspendBlocker stays true if HBM/dimlayer linger).
+    write /sys/kernel/oppo_display/dimlayer_hbm 0
+    write /sys/kernel/oppo_display/notify_fppress 0
+    write /sys/kernel/oppo_display/force_screenfp 0
+    write /sys/kernel/oppo_display/hbm 0
+
 on boot && property:persist.vendor.usb.controller.default=*
     setprop vendor.usb.controller ${persist.vendor.usb.controller.default}
 

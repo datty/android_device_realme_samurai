@@ -730,7 +730,9 @@
          to maximize power savings but not all devices support it.
          Refer to autosuspend.h for details.
     -->
-    <bool name="config_powerDecoupleAutoSuspendModeFromDisplay">true</bool>
+    <!-- false: autosuspend_enable() only after display is truly off (msmnile/HWC).
+         true broke deep idle when DOZE state never completed (display suspend blocker). -->
+    <bool name="config_powerDecoupleAutoSuspendModeFromDisplay">false</bool>
 
     <!-- Power Management: Specifies whether to decouple the interactive state of the
          device from the display on/off state.
@@ -745,7 +747,8 @@
          to maximize power savings but not all devices support it.
          Refer to power.h for details.
     -->
-    <bool name="config_powerDecoupleInteractiveModeFromDisplay">true</bool>
+    <!-- false: setInteractive(false) when display turns off — required with DOZE off. -->
+    <bool name="config_powerDecoupleInteractiveModeFromDisplay">false</bool>
 
     <!-- Indicate whether to allow the device to suspend when the screen is off
          due to the proximity sensor.  This resource should only be set to true
