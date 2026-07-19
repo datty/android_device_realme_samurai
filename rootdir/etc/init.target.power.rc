@@ -111,10 +111,15 @@ on property:vendor.setup.power=1
     setprop vendor.powerhal.init 1
 
 on boot
-    # Allow the console to suspend so it does not block deeper LPM/suspend.
-    # (Use console_suspend=N only when actively debugging kernel crashes.)
+    # Prefer suspend-to-RAM early so userspace never sticks on s2idle default.
+    # LPM stays disabled until boot_completed / enable-low-power (boot safety).
     write /sys/module/printk/parameters/console_suspend Y
+    write /sys/power/mem_sleep deep
 
-    # Prefer suspend-to-RAM ("deep") over s2idle for real idle power.
-    # boot_completed also sets this; keep them consistent.
-    write /sys/power/mem_sleep "deep"
+# Re-assert idle settings after full boot (covers races with other init scripts).
+on property:sys.boot_completed=1
+    write /sys/power/mem_sleep deep
+    write /sys/module/lpm_levels/parameters/sleep_disabled 0
+    write /sys/module/printk/parameters/console_suspend Y
+    write /sys/devices/platform/soc/${ro.boot.bootdevice}/clkgate_enable 1
+    write /sys/devices/platform/soc/${ro.boot.bootdevice}/hibern8_on_idle_enable 1

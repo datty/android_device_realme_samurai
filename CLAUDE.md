@@ -84,6 +84,33 @@ The fingerprint HAL (`fingerprint/`) calls into `syshelper/` via AIDL to raise/l
 2. It calls `UdfpsHelper` (in `syshelper/`) to toggle `dimlayer_hbm` via the display driver sysfs node
 3. `getUdfpsDimZOrder()` controls the z-order of the dim layer
 
+**Null-safety:** `BiometricsFingerprint` must tolerate a missing oplus FP or syshelper service (return `SYS_EINVAL` / no-op callbacks). `isEnrolling` is initialized `false`.
+
+**Icon asset:** White fingerprint glyph in static SystemUI RRO only:
+`overlay/SystemUIRes/res/drawable-nodpi/udfps_icon_pressed.webp`  
+Do **not** duplicate under `overlay-lineage/.../SystemUI/`.
+
+### Product ownership (do not dual-stack)
+
+| Feature | Owner | Notes |
+|---------|--------|--------|
+| Ambient / pickup | **OplusDoze** + `OplusDozeResCommon` | RealmeParts doze activity/service disabled |
+| Charge limit | **Lineage Health** on `mmi_charging_enable` | RealmeParts SmartCharging disabled |
+| Display extras | RealmeParts (DC/HBM/sRGB/OTG/game) | Sysfs under `/sys/kernel/oppo_display` (0660 system) |
+
+### Vibrator / DRM
+- Vibrator HAL: `vendor.qti.hardware.vibrator.service.oplus` (hardware/oplus QTI path; aw8697 via `/sys/class/leds/vibrator`).
+- Copy CAF `excluded-input-devices.xml` so touchscreen input does not double-trigger haptics.
+- Ship `wvmkiller` with DRM/clearkey packages.
+
+### Power / performance
+- **PowerHAL** reads `configs/powerhint.json`. Gold+ (`cpu7`) default max is **2956800** (SM8150/855+ table top — not 2841600). GPU min/max are driven via **`max_pwrlevel` / `min_pwrlevel`** (not raw `devfreq` Hz alone); `ResetOnInit` must not re-cap clocks below hardware max.
+- **Init profiles** in `init.qcom.power.rc` must stay aligned with powerhint (cpu7 max + GPU pwrlevels for balanced/gaming/power-save).
+- **Idle / deep sleep (device tree, not a kernel gap)**:
+  - Cmdline: `lpm_levels.sleep_disabled=1` for boot, `mem_sleep_default=deep`.
+  - On `sys.boot_completed=1`: clear `sleep_disabled`, set `mem_sleep=deep`, `console_suspend=Y`, UFS clkgate/hibern8 — via **both** `init.qcom.power.rc` `enable-low-power` and `init.target*.rc` (do not leave `enable-low-power` as UFS-only).
+  - Kernel already has `CONFIG_MSM_PM` + PSCI suspend; if idle is still broken after this, check userspace wakelocks (`dumpsys power`) before changing the kernel.
+
 ### Device Variant Detection
 `init/init_samurai.cpp` runs at early boot and reads the `ro.boot.id.operators` property to distinguish variants, then calls `property_override()` to set the correct `ro.product.*` and `ro.build.*` values. This pattern is also used for RAM-tier-specific dalvik heap configurations.
 

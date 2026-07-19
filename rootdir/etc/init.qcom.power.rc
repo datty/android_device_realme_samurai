@@ -149,9 +149,13 @@ on property:init.svc.vendor.charger=running
     write /sys/module/lpm_levels/parameters/sleep_disabled 0
 
 on enable-low-power
-    # Enable UFS powersaving
+    # Runtime idle stack (must match charger path + target.power).
+    # Boot keeps lpm_levels.sleep_disabled=1 (cmdline + on init); clear it here.
     write /sys/devices/platform/soc/${ro.boot.bootdevice}/clkgate_enable 1
     write /sys/devices/platform/soc/${ro.boot.bootdevice}/hibern8_on_idle_enable 1
+    write /sys/module/lpm_levels/parameters/sleep_disabled 0
+    write /sys/power/mem_sleep deep
+    write /sys/module/printk/parameters/console_suspend Y
 
 on property:sys.boot_completed=1
     trigger enable-low-power

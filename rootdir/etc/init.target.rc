@@ -135,6 +135,7 @@ on boot
     setprop sys.usb.configfs 1
 
 on property:sys.boot_completed=1
+    # PowerHAL / bus-dcvs / LPM re-enable (see init.target.power.rc)
     setprop vendor.setup.power 1
 
     # Runtime fs tuning
@@ -153,6 +154,12 @@ on property:sys.boot_completed=1
     write /dev/cpuset/background/cpus 0-1
     write /dev/cpuset/system-background/cpus 0-3
     write /dev/cpuset/restricted/cpus 0-3
+
+    # Deep idle: suspend-to-RAM + allow CPU LPM (cmdline has sleep_disabled=1).
+    # Also re-asserted in init.qcom.power.rc enable-low-power and target.power.rc.
+    write /sys/power/mem_sleep deep
+    write /sys/module/lpm_levels/parameters/sleep_disabled 0
+    write /sys/module/printk/parameters/console_suspend Y
 
 on boot && property:persist.vendor.usb.controller.default=*
     setprop vendor.usb.controller ${persist.vendor.usb.controller.default}
@@ -199,7 +206,6 @@ on charger
     write /sys/devices/system/cpu/cpu6/online 0
     write /sys/devices/system/cpu/cpu7/online 0
 
-on property:sys.boot_completed=1
-    # Enable suspend-to-RAM and re-allow LPM (cmdline boots with sleep_disabled=1)
-    write /sys/power/mem_sleep "deep"
+    # Allow LPM while on charger screen
+    write /sys/power/mem_sleep deep
     write /sys/module/lpm_levels/parameters/sleep_disabled 0
