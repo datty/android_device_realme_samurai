@@ -109,7 +109,11 @@ Do **not** duplicate under `overlay-lineage/.../SystemUI/`.
 - **Idle / deep sleep (device tree, not a kernel gap)**:
   - Cmdline: `lpm_levels.sleep_disabled=1` for boot, `mem_sleep_default=deep`.
   - On `sys.boot_completed=1`: clear `sleep_disabled`, set `mem_sleep=deep`, `console_suspend=Y`, UFS clkgate/hibern8 — via **both** `init.qcom.power.rc` `enable-low-power` and `init.target*.rc` (do not leave `enable-low-power` as UFS-only).
-  - Kernel already has `CONFIG_MSM_PM` + PSCI suspend; if idle is still broken after this, check userspace wakelocks (`dumpsys power`) before changing the kernel.
+  - **Display must reach OFF** or PowerManager keeps `mHoldingDisplaySuspendBlocker` and `mWakefulness=Awake`:
+    - `doze_display_state_supported=false` (SystemUIRes) — HWC/oppo panel does not complete DOZE→OFF.
+    - `config_powerDecouple{AutoSuspend,Interactive}ModeFromDisplay=false` — couple autosuspend/interactive to real display off.
+    - Clear `dimlayer_hbm` / `force_screenfp` / `hbm` on boot_completed if UDFPS left them set.
+  - Kernel already has `CONFIG_MSM_PM` + PSCI suspend; if still broken, `dumpsys power` for app wake locks.
 
 ### Device Variant Detection
 `init/init_samurai.cpp` runs at early boot and reads the `ro.boot.id.operators` property to distinguish variants, then calls `property_override()` to set the correct `ro.product.*` and `ro.build.*` values. This pattern is also used for RAM-tier-specific dalvik heap configurations.
