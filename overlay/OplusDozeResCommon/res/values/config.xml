@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Pickup / lift-to-wake via standard tilt detector -->
+    <string name="pickup_sensor_type">android.sensor.tilt_detector</string>
+    <item name="pickup_sensor_value" format="float" type="dimen">0.0</item>
+</resources>

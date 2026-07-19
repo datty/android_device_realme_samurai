@@ -216,6 +216,11 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.display.mapper@3.0 \
     vendor.qti.hardware.display.mapper@4.0.vendor
 
+# Doze — OplusDoze ONLY (pickup via tilt). RealmeParts doze is disabled in the app.
+PRODUCT_PACKAGES += \
+    OplusDoze \
+    OplusDozeResCommon
+
 # DRM
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.4.vendor \
@@ -223,6 +228,7 @@ PRODUCT_PACKAGES += \
     wvmkiller
 
 # Fingerprint
+# Device-local 2.3 wrapper: sysfs /sys/kernel/oppo_display/* + syshelper AIDL.
 PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.3-service.samurai
 
