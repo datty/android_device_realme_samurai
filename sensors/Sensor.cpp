@@ -42,8 +42,8 @@ static bool readFpState(int fd, int& screenX, int& screenY) {
     }
 
     rc = sscanf(buffer, "%d,%d,%d", &screenX, &screenY, &state);
-    if (rc < 0) {
-        ALOGE("failed to parse fp state: %d", rc);
+    if (rc != 3) {
+        ALOGE("failed to parse fp state: sscanf returned %d", rc);
         return false;
     }
 

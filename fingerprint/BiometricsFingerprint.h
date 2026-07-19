@@ -30,7 +30,10 @@
 
 #include <vendor/oplus/hardware/biometrics/fingerprint/2.1/IBiometricsFingerprint.h>
 
+#include <android-base/file.h>
+
 #include <fstream>
+#include <string>
 
 namespace android {
 namespace hardware {
@@ -44,6 +47,7 @@ namespace implementation {
 
 using ::android::sp;
 using ::android::base::GetProperty;
+using ::android::base::WriteStringToFile;
 using ::android::hardware::hidl_string;
 using ::android::hardware::Return;
 using ::android::hardware::Void;
@@ -117,13 +121,16 @@ class BiometricsFingerprint : public IBiometricsFingerprint,
                                   uint32_t resultLen) override;
 
   private:
+    bool ensureOplusHal() const;
+
     /*
     * Write value to path and close file.
     */
     template <typename T>
     void set(const std::string& path, const T& value) {
-        std::ofstream file(path);
-        file << value;
+        if (!WriteStringToFile(std::to_string(value), path)) {
+            ALOGW("Failed to write %s to %s", std::to_string(value).c_str(), path.c_str());
+        }
     }
 
     template <typename T>
@@ -163,7 +170,7 @@ class BiometricsFingerprint : public IBiometricsFingerprint,
     std::shared_ptr<IUdfpsHelper> mOplusUdfpsHelper;
     sp<V2_1::IBiometricsFingerprintClientCallback> mClientCallback;
 
-    bool isEnrolling;
+    bool isEnrolling = false;
 
     typedef enum fingerprint_callback_cmd_Id {
         FINGERPRINT_CALLBACK_CMD_ID_NONE = 0,

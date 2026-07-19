@@ -112,8 +112,12 @@ void UdfpsHelper::startThread(UdfpsHelper* helper) {
 
     {
         std::lock_guard<decltype(callback_mutex_lock)> lock(callback_mutex_lock);
-        callbacks_.emplace_back(LinkedCallback::Make(ref<UdfpsHelper>(), callback));
-        // unlock
+        auto linked = LinkedCallback::Make(ref<UdfpsHelper>(), callback);
+        if (linked == nullptr) {
+            LOG(ERROR) << "LinkedCallback::Make failed (linkToDeath)";
+            return ndk::ScopedAStatus::fromExceptionCode(EX_ILLEGAL_STATE);
+        }
+        callbacks_.emplace_back(std::move(linked));
     }
 
     if (auto res = callback->onUdfpsTouchStatusChanged(currentIsDownState); IsDeadObjectLogged(res)) {
