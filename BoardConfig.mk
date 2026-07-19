@@ -44,6 +44,8 @@ TARGET_NO_BOOTLOADER := true
 BOARD_BOOTIMG_HEADER_VERSION := 1
 BOARD_MKBOOTIMG_ARGS := --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
 BOARD_KERNEL_BASE := 0x00000000
+# kpti=off: intentional on this 4.14 msmnile tree (perf/stability). Re-test boot
+# thoroughly before enabling; samurai_defconfig does not set UNMAP_KERNEL_AT_EL0.
 BOARD_KERNEL_CMDLINE := \
     androidboot.boot_devices=soc/1d84000.ufshc \
     androidboot.console=ttyMSM0 \
