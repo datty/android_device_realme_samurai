@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-License-Identifier: Apache-2.0
+-->
+<permissions>
+    <privapp-permissions package="org.lineageos.settings.chargespeed">
+        <permission name="android.permission.RECEIVE_BOOT_COMPLETED" />
+        <permission name="android.permission.WRITE_SECURE_SETTINGS" />
+    </privapp-permissions>
+</permissions>

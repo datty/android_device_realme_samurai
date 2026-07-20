@@ -285,6 +285,11 @@ PRODUCT_PACKAGES += \
 
 $(call soong_config_set,lineage_health,charging_control_charging_path,/sys/class/power_supply/battery/mmi_charging_enable)
 
+# Charging speed (cool_down only) — Settings → Battery IA entry.
+# Never writes mmi_charging_enable; percent limit stays with Lineage Health.
+PRODUCT_PACKAGES += \
+    ChargingSpeed
+
 # HIDL
 PRODUCT_PACKAGES += \
     libhidltransport.vendor \

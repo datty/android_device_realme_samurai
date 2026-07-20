@@ -55,6 +55,7 @@ on boot
     chown system system /sys/class/power_supply/battery/short_ic_otp_status
     chown system system /sys/class/power_supply/battery/ship_mode
     chown system system /sys/class/power_supply/battery/cool_down
+    chmod 0660 /sys/class/power_supply/battery/cool_down
     # system:system + 0660 — avoid world-writable power nodes (SELinux still gates)
     chmod 0660 /sys/class/power_supply/battery/call_mode
     chown system system /sys/class/power_supply/battery/call_mode

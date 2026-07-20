@@ -1,0 +1,33 @@
+//
+// SPDX-FileCopyrightText: 2026
+// SPDX-License-Identifier: Apache-2.0
+//
+// Charging speed UI (oplus cool_down). Does NOT touch mmi_charging_enable
+// (Lineage Health owns charge limit).
+//
+
+android_app {
+    name: "ChargingSpeed",
+    defaults: ["SettingsLibDefaults"],
+    srcs: ["src/**/*.java"],
+    resource_dirs: ["res"],
+    certificate: "platform",
+    platform_apis: true,
+    privileged: true,
+    system_ext_specific: true,
+
+    static_libs: [
+        "org.lineageos.settings.resources",
+    ],
+
+    required: [
+        "privapp_whitelist_org.lineageos.settings.chargespeed",
+    ],
+}
+
+prebuilt_etc {
+    name: "privapp_whitelist_org.lineageos.settings.chargespeed",
+    src: "privapp_whitelist_org.lineageos.settings.chargespeed.xml",
+    sub_dir: "permissions",
+    system_ext_specific: true,
+}
