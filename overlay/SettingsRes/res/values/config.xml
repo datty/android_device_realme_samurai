@@ -28,4 +28,11 @@
 
     <!-- Whether to show Smooth Display feature in Settings Options -->
     <bool name="config_show_smooth_display">true</bool>
+
+    <!--
+         Lineage/Infinity hide cycle count by default (many devices report junk).
+         Samurai exports real fuel-gauge cycles via power_supply cycle_count;
+         enable Settings → Battery → Battery information → Cycle count.
+    -->
+    <bool name="config_show_battery_cycle_count" translatable="false">true</bool>
 </resources>
