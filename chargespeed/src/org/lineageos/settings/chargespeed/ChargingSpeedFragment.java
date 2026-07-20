@@ -33,6 +33,8 @@ public class ChargingSpeedFragment extends PreferenceFragment
 
         int saved = CoolDownUtils.loadSaved(getContext());
         mSpeedPref.setValue(String.valueOf(saved));
+        // "%s" summary shows the selected entry (system ListPreference style)
+        mSpeedPref.setSummary("%s");
         mSpeedPref.setOnPreferenceChangeListener(this);
     }
 
@@ -46,6 +48,8 @@ public class ChargingSpeedFragment extends PreferenceFragment
                 return false;
             }
             CoolDownUtils.saveAndApply(getContext(), level);
+            mSpeedPref.setValue(String.valueOf(level));
+            mSpeedPref.setSummary("%s");
             return true;
         }
         return false;
