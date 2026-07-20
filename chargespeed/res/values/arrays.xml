@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     cool_down index → dual-cell oplus table (approx):
+       0 = unlimited (charger/VOOC decide)
+       2 ≈ 1500 mA  (classic Parts “1.8A & 15W”)
+       3 ≈ 2000 mA
+       5 ≈ 3000 mA
+     Labels are approximate; real power depends on adapter/VOOC path.
+-->
+<resources>
+    <string-array name="charging_speed_entries">
+        <item>Default (full speed)</item>
+        <item>~1.5–1.8A · 15W class</item>
+        <item>~2A class</item>
+        <item>~3A class</item>
+    </string-array>
+    <string-array name="charging_speed_values">
+        <item>0</item>
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
+    </string-array>
+</resources>

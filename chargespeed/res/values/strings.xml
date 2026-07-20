@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="charging_speed_title">Charging speed</string>
+    <string name="charging_speed_summary">Limit peak charge current via cool_down. Charge percentage limit is under Battery charging control (Lineage Health).</string>
+    <string name="charging_speed_pref_title">Speed limit</string>
+    <string name="charging_speed_pref_summary">Applies while charging. Default allows full VOOC/SuperVOOC.</string>
+    <string name="charging_speed_unavailable">cool_down node not available on this build</string>
+    <string name="charging_speed_note">Does not change the battery percent limit. That stays in Settings → Battery → Charging control.</string>
+</resources>

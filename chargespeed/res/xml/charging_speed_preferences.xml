@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="charging_speed_note"
+        android:title="@string/charging_speed_title"
+        android:summary="@string/charging_speed_note"
+        android:selectable="false"
+        android:persistent="false" />
+
+    <ListPreference
+        android:key="charging_speed"
+        android:title="@string/charging_speed_pref_title"
+        android:summary="@string/charging_speed_pref_summary"
+        android:entries="@array/charging_speed_entries"
+        android:entryValues="@array/charging_speed_values"
+        android:defaultValue="0" />
+
+</PreferenceScreen>
