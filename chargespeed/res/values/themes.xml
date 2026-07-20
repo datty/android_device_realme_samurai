@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SettingsLib base + system Material You accents so preference
+     press/highlight matches Settings (not magenta Material fallback).
+-->
+<resources>
+    <style name="Theme.ChargingSpeed" parent="@style/Theme.SubSettingsBase">
+        <item name="android:colorAccent">@android:color/system_accent1_600</item>
+        <item name="colorAccent">@android:color/system_accent1_600</item>
+        <item name="colorPrimary">@android:color/system_accent1_600</item>
+        <item name="colorPrimaryDark">@android:color/system_accent1_800</item>
+        <item name="colorSecondary">@android:color/system_accent2_600</item>
+        <item name="android:colorControlHighlight">@android:color/system_neutral2_300</item>
+        <item name="colorControlHighlight">@android:color/system_neutral2_300</item>
+        <item name="android:colorControlActivated">@android:color/system_accent1_600</item>
+        <item name="colorControlActivated">@android:color/system_accent1_600</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>
