@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2026
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="samurai_charging_speed_title">Charging speed</string>
+    <string name="samurai_charging_speed_summary">Limit peak charge current (cool_down)</string>
+</resources>
