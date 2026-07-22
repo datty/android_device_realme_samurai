@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2022-2026 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- The properties of a UDFPS sensor in pixels: X, Y, radius -->
+    <integer-array name="config_udfps_sensor_props" translatable="false">
+        <item>540</item>
+        <item>2156</item>
+        <item>95</item>
+    </integer-array>
+
+    <!-- UDFPS framework location for SystemUI: X, Y, radius -->
+    <string-array name="config_udfpsFrameworkLocation" translatable="false">
+        <item>540,2156,95</item>
+    </string-array>
+</resources>
