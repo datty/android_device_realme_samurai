@@ -1086,7 +1086,7 @@
     </integer-array>
 
     <string-array name="config_udfpsFrameworkLocation" translatable="false">
-        <item>540,2156,95</item>
+        <item>180,719,32</item>
     </string-array>
 
     <!-- How long it takes for the HW to start illuminating after the illumination is requested. -->
