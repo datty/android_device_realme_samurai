@@ -31,6 +31,10 @@
 
     <dimen name="keyguard_indication_margin_bottom">14dp</dimen>
 
-    <!-- Physical pixel pitch in micrometers for UDFPS view scaling -->
+    <!-- Microns per pixel. Required so DeviceEntry UDFPS icon padding is valid.
+         Without this (AOSP default -1), iconSize becomes negative and padding
+         crushes the lock/fingerprint glyph — only the solid fingerprint_bg circle
+         remains on the lock screen.
+         RMX1931: 1080x2400 @ 6.5" ≈ 402 ppi → 25400/402 ≈ 63.2 um/px. -->
     <item name="pixel_pitch" format="float" type="dimen">63.2</item>
 </resources>

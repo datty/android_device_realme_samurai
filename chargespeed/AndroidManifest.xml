@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     cool_down speed UI. Listed under Settings → Battery between Charging
+     control and Battery information via SettingsRes power_usage_summary.
+     No top-level IA tile (order -180 put it above the battery header).
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="org.lineageos.settings.chargespeed"
+    android:sharedUserId="android.uid.system">
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission
+        android:name="android.permission.WRITE_SECURE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+
+    <application
+        android:label="@string/charging_speed_title"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ChargingSpeed"
+        android:defaultToDeviceProtectedStorage="true"
+        android:directBootAware="true">
+
+        <!-- Opened from Battery → Charging speed preference intent -->
+        <activity
+            android:name=".ChargingSpeedActivity"
+            android:label="@string/charging_speed_title"
+            android:theme="@style/Theme.ChargingSpeed"
+            android:exported="true"
+            android:excludeFromRecents="true" />
+
+        <receiver
+            android:name=".BootCompletedReceiver"
+            android:exported="true"
+            android:directBootAware="true">
+            <intent-filter android:priority="50">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="charging_speed_title">Charging speed</string>
+    <!-- Short summary for Settings battery list entry -->
+    <string name="charging_speed_summary">Limit peak charge current (cool_down)</string>
+    <string name="charging_speed_pref_title">Speed limit</string>
+    <string name="charging_speed_pref_summary">While charging. Default = full VOOC/SuperVOOC. Battery percent limit is separate (Charging control).</string>
+    <string name="charging_speed_unavailable">cool_down not available on this build</string>
+    <string name="charging_speed_dialog_title">Speed limit</string>
+</resources>

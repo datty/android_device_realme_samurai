@@ -44,6 +44,12 @@ TARGET_NO_BOOTLOADER := true
 BOARD_BOOTIMG_HEADER_VERSION := 1
 BOARD_MKBOOTIMG_ARGS := --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
 BOARD_KERNEL_BASE := 0x00000000
+# kpti=off: intentional on this 4.14 msmnile tree (perf/stability). Re-test boot
+# thoroughly before enabling; samurai_defconfig does not set UNMAP_KERNEL_AT_EL0.
+#
+# lpm_levels.sleep_disabled=1: keep CPU LPM off during boot for stability; init
+# clears it on boot_completed (init.qcom.power.rc enable-low-power + target.rc).
+# mem_sleep_default=deep: prefer suspend-to-RAM over kernel default s2idle.
 BOARD_KERNEL_CMDLINE := \
     androidboot.boot_devices=soc/1d84000.ufshc \
     androidboot.console=ttyMSM0 \
@@ -52,6 +58,7 @@ BOARD_KERNEL_CMDLINE := \
     kpti=off \
     loop.max_part=7 \
     lpm_levels.sleep_disabled=1 \
+    mem_sleep_default=deep \
     msm_rtb.filter=0x237 \
     pm.sleep_mode=1 \
     service_locator.enable=1 \
@@ -85,11 +92,8 @@ BOARD_USES_ALSA_AUDIO := true
 # Display
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
-#MAX_VIRTUAL_DISPLAY_DIMENSION := 4096
 TARGET_DISABLED_UBWC := true
-#TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 TARGET_SCREEN_DENSITY := 480
-#TARGET_USES_DISPLAY_RENDER_INTENTS := true
 TARGET_USES_COLOR_METADATA := true
 #TARGET_USES_DRM_PP := true
 TARGET_USES_GRALLOC4 := true
@@ -154,8 +158,8 @@ VENDOR_SECURITY_PATCH := 2021-11-05
 
 # Sepolicy
 include device/qcom/sepolicy_vndr/SEPolicy.mk
+# hardware/oplus SEPolicy.mk already pulls in device/lineage/sepolicy/libperfmgr
 include hardware/oplus/sepolicy/qti/SEPolicy.mk
-include device/lineage/sepolicy/libperfmgr/sepolicy.mk
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
 SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/public
 BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor

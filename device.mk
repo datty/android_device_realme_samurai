@@ -216,12 +216,19 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.display.mapper@3.0 \
     vendor.qti.hardware.display.mapper@4.0.vendor
 
+# Doze — OplusDoze ONLY (pickup via tilt). RealmeParts doze is disabled in the app.
+PRODUCT_PACKAGES += \
+    OplusDoze \
+    OplusDozeResCommon
+
 # DRM
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.4.vendor \
-    android.hardware.drm-service.clearkey
+    android.hardware.drm-service.clearkey \
+    wvmkiller
 
 # Fingerprint
+# Device-local 2.3 wrapper: sysfs /sys/kernel/oppo_display/* + syshelper AIDL.
 PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.3-service.samurai
 
@@ -264,10 +271,25 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/gps.conf:$(TARGET_COPY_OUT_ODM)/etc/gps.conf
 
 # Health
+# Proprietary android.hardware.health@2.1-service.samurai is started from init;
+# AOSP unit is installed but disabled there when the .samurai binary is present.
 PRODUCT_PACKAGES += \
     android.hardware.health@2.1-impl:64 \
     android.hardware.health@2.1-impl.recovery \
     android.hardware.health@2.1-service
+
+# Lineage Health — sole charge-limit owner (mmi_charging_enable).
+# RealmeParts SmartCharging is disabled so it cannot fight this node.
+PRODUCT_PACKAGES += \
+    vendor.lineage.health-service.default
+
+$(call soong_config_set,lineage_health,charging_control_charging_path,/sys/class/power_supply/battery/mmi_charging_enable)
+
+# Charging speed (cool_down only) — Settings → Battery, between Charging
+# control and Battery information (SettingsRes power_usage_summary).
+# Never writes mmi_charging_enable; percent limit stays with Lineage Health.
+PRODUCT_PACKAGES += \
+    ChargingSpeed
 
 # HIDL
 PRODUCT_PACKAGES += \
@@ -495,9 +517,12 @@ $(call soong_config_set,OPLUS_LINEAGE_TOUCH_HAL,INCLUDE_DIR,$(LOCAL_PATH)/touch/
 PRODUCT_PACKAGES += \
     android.hardware.usb@1.3-service.dual_role_usb
 
-# Vibrator
+# Vibrator (hardware/oplus QTI path; aw8697 haptic via /sys/class/leds/vibrator)
 PRODUCT_PACKAGES += \
     vendor.qti.hardware.vibrator.service.oplus
+
+PRODUCT_COPY_FILES += \
+    vendor/qcom/opensource/vibrator/excluded-input-devices.xml:$(TARGET_COPY_OUT_VENDOR)/etc/excluded-input-devices.xml
 
 # WiFi
 PRODUCT_PACKAGES += \

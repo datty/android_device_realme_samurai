@@ -34,7 +34,10 @@ ro.camera.hfr.enable=1
 ro.camera.relight.enable=0
 ro.camera.attr.detect.enable=1
 ro.camera.temperature.limit=470
-ro.oplus.system.camera.flashlight=com.oppo.motor.flashlight
+# Do NOT set ro.oplus.system.camera.flashlight=com.oppo.motor.flashlight —
+# that package is for pop-up motor devices (e.g. Realme X2). X2 Pro (samurai)
+# has a fixed front camera; motor flashlight breaks QS torch / brightness path.
+# Standard CameraManager torch API is used instead.
 ro.oplus.camera.video_beauty.prefix=oppo.video.beauty.
 ro.oplus.camera.video.beauty.switch=oppo.switch.video.beauty
 persist.vendor.camera.light_ae.enable=1
@@ -88,9 +91,6 @@ vendor.media.vpp.enable=true
 # Memory optimizations
 ro.vendor.qti.sys.fw.bservice_enable=true
 
-# Mock
-persist.sys.force_sw_gles=0
-
 # Netflix custom property
 ro.netflix.bsp_rev=Q855-16947-1
 
@@ -105,14 +105,11 @@ persist.dbg.vt_avail_ovr=1
 persist.rcs.supported=1
 
 # RIL
+# persist.vendor.radio.* lives in vendor.prop only (partition ownership)
 persist.radio.hvolte.enable=1
 persist.radio.custom_exp_ecc=1
-persist.vendor.radio.atfwd.start=true
 persist.vendor.radio.data_con_rprt=1
-persist.vendor.radio.lte_vrte_ltd=1
-persist.vendor.radio.cs_srv_type=1
 persist.vendor.radio.process_sups_ind=1
-persist.vendor.radio.rat_on=combine
 ril.subscription.types=NV,RUIM
 ro.telephony.default_network=22,22
 telephony.lteOnCdmaDevice=1
@@ -130,7 +127,9 @@ persist.data.df.dev_name=rmnet_usb0
 
 # Sensors
 persist.vendor.sensors.enable.mag_filter=true
-ro.qti.sensors.wu=false
+# Wake-up sensors (tilt / pickup / proximity gestures). false breaks
+# lift-to-wake and RealmeParts / OplusDoze pickup while screen is off.
+ro.qti.sensors.wu=true
 
 # SSR
 persist.vendor.ssr.enable_ramdumps=0

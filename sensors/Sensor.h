@@ -72,7 +72,7 @@ class Sensor {
     int64_t mLastSampleTimeNs;
     SensorInfo mSensorInfo;
 
-    std::atomic_bool mStopThread;
+    std::atomic_bool mStopThread{false};
     std::condition_variable mWaitCV;
     std::mutex mRunMutex;
     std::thread mRunThread;

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- No extra "note" card — percent limit is only mentioned in the list summary. -->
+    <ListPreference
+        android:key="charging_speed"
+        android:title="@string/charging_speed_pref_title"
+        android:summary="%s"
+        android:dialogTitle="@string/charging_speed_dialog_title"
+        android:entries="@array/charging_speed_entries"
+        android:entryValues="@array/charging_speed_values"
+        android:defaultValue="0" />
+
+</PreferenceScreen>

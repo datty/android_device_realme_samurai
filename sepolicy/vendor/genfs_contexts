@@ -1,10 +1,10 @@
-# Devinfo
+# Devinfo (rild/system_server read full /proc/devinfo; oplus only labels subnodes)
 genfscon proc /devinfo u:object_r:proc_devinfo:s0
 
-# Graphics
+# Graphics: broader sde-crtc label for fps/power nodes (oplus labels early_wakeup only)
 genfscon sysfs /devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/sde-crtc- u:object_r:vendor_sysfs_sde_crtc:s0
 
-# Oppo Display
+# Oppo Display (legacy kernel path; oplus genfs only covers /kernel/oplus_display)
 genfscon sysfs /kernel/oppo_display u:object_r:sysfs_oppo_display:s0
 
 # Sched

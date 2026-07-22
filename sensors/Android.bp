@@ -1,14 +1,11 @@
-// The sensors multihal service is provided by the AOSP
-// android.hardware.sensors@2.1-service.multihal (referenced from device.mk and
-// also pulled by the common config). This device only contributes the OPLUS
-// sensor subhal below, loaded by the multihal via configs/sensors/hals.conf.
 //
-// The previous inline custom multihal service (service.cpp / HalProxy* /
-// AlsCorrection.cpp) installed the same vendor/bin/hw/...service.multihal binary
-// as the AOSP one, which is unconditionally built on lineage-23 -> dupbuild
-// collision. It is no longer built; its sources remain for reference. The inline
-// ALS correction is dropped here and can be reintroduced as a subhal-side
-// adjustment later if needed.
+// Copyright (C) 2021-2025 The LineageOS Project
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+
+// OPLUS sensor subhal loaded by AOSP android.hardware.sensors@2.1-service.multihal
+// via configs/sensors/hals.conf.
 
 cc_library_shared {
     name: "sensors.oplus.samurai",
