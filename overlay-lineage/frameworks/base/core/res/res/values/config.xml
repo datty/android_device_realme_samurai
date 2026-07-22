@@ -11,8 +11,8 @@
         <item>95</item>
     </integer-array>
 
-    <!-- UDFPS framework location for SystemUI: left, top, right, bottom (in pixels) -->
+    <!-- UDFPS framework location for SystemUI: X, Y, radius -->
     <string-array name="config_udfpsFrameworkLocation" translatable="false">
-        <item>445,2061,635,2251</item>
+        <item>540,2156,95</item>
     </string-array>
 </resources>
